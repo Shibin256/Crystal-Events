@@ -105,10 +105,10 @@ require('header.php');
                                                     </div>
                                                 </td>
                                                 <td class="" style="vertical-align: middle;">
-                                                    <input type="date" class="form-control" name="<?php echo $row['event_id'] . '_date'; ?>">
+                                                    <input type="date" class="form-control" name="<?php echo $row['event_id'] . '_date'; ?>" required>
                                                 </td>
                                                 <td class="" style="vertical-align: middle;">
-                                                    <textarea class="form-control" placeholder="Enter your requirements..." name="<?php echo $row['event_id'] . '_req'; ?>">
+                                                    <textarea class="form-control" placeholder="Enter your requirements..." name="<?php echo $row['event_id'] . '_req'; ?>" required>
 
                                         </textarea>
                                                 </td>
@@ -129,9 +129,10 @@ require('header.php');
                                         <tr>
                                             <td></td>
                                             <td></td>
+                                            <td></td>
                                             <td>
-                                                <button type="button" class="btn btn-info" onclick="window.location.href='allbikes.php'">
-                                                    <span class="fa fa-shopping-cart"></span> Continue Shopping
+                                                <button type="submit" class="btn btn-info">
+                                                    <span class="fa fa-shopping-cart"></span> Book Now
                                                 </button>
                                             </td>
 
