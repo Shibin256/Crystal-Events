@@ -69,69 +69,76 @@ require('header.php');
                 ?>
                     <div class="row">
                         <div class="col-sm-12">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Product</th>
-                                        <th class="text-center">Price</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    while ($row = mysqli_fetch_assoc($res)) {
-
-                                    ?>
+                            <form>
+                                <table class="table table-hover">
+                                    <thead>
                                         <tr>
-                                            <td class="col-sm-8 col-md-6">
-                                                <div class="media">
-                                                    <?php
-                                                    $id = $row['company_email'];
-                                                    $sql2 = "select * from company where email='$id'";
-                                                    $res2 = sel($sql2);
-                                                    $row2 = mysqli_fetch_assoc($res2);
-                                                    ?>
-                                                    <a class="thumbnail pull-left" href=""> <img class="media-object" src="../company/uploads/profile/<?php echo $row2['profile_pic']; ?>" style="width: 72px; height: 72px;"> </a>
-
-                                                    <div class="media-body" style="padding:5px;margin-left:5px;">
-                                                        <h4 class="media-heading"><a href=""><?php echo $row['name']; ?></a>
-                                                        </h4>
-                                                        <h5 class="media-heading"> by <?php echo $row['cat_title']; ?></h5>
-
-
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="col-sm-1 col-md-1 text-center" style="vertical-align: middle;">
-                                                <strong><?php //echo $row['price']; 
-                                                        ?></strong>
-                                            </td>
-                                            <td class="col-sm-1 col-md-1">
-                                                <div style="display: flex;align-items: center;justify-content: center;">
-                                                    <button type="button" class="btn btn-danger" onclick="remove(<?php echo $row['cart_id']; ?>)">
-                                                        <span class="glyphicon glyphicon-remove"></span> Remove
-                                                    </button>
-                                                </div>
-                                            </td>
+                                            <th>Item</th>
+                                            <th>Event Date</th>
+                                            <th>Requirements</th>
+                                            <th>Action</th>
                                         </tr>
-                                    <?php
-                                    }
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        while ($row = mysqli_fetch_assoc($res)) {
 
-                                    ?>
+                                        ?>
+                                            <tr>
+                                                <td class="">
+                                                    <div class="media">
+                                                        <?php
+                                                        $id = $row['company_email'];
+                                                        $sql2 = "select * from company where email='$id'";
+                                                        $res2 = sel($sql2);
+                                                        $row2 = mysqli_fetch_assoc($res2);
+                                                        ?>
+                                                        <a class="thumbnail pull-left" href=""> <img class="media-object" src="../company/uploads/profile/<?php echo $row2['profile_pic']; ?>" style="width: 72px; height: 72px;"> </a>
+
+                                                        <div class="media-body" style="padding:5px;margin-left:5px;">
+                                                            <h4 class="media-heading"><a href=""><?php echo $row['name']; ?></a>
+                                                            </h4>
+                                                            <h5 class="media-heading"> by <?php echo $row2['name']; ?></h5>
+                                                            <p><?php echo $row['cat_title']; ?></p>
+
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="" style="vertical-align: middle;">
+                                                    <input type="date" class="form-control" name="<?php echo $row['event_id'] . '_date'; ?>">
+                                                </td>
+                                                <td class="" style="vertical-align: middle;">
+                                                    <textarea class="form-control" placeholder="Enter your requirements..." name="<?php echo $row['event_id'] . '_req'; ?>">
+
+                                        </textarea>
+                                                </td>
+                                                <td class="">
+                                                    <div style="display: flex;align-items: center;justify-content: center;">
+                                                        <button type="button" class="btn btn-danger btn-sm" onclick="remove(<?php echo $row['cart_id']; ?>)">
+                                                            <span class="glyphicon glyphicon-remove"></span> Remove
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <?php
+                                        }
+
+                                        ?>
 
 
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td>
-                                            <button type="button" class="btn btn-info" onclick="window.location.href='allbikes.php'">
-                                                <span class="fa fa-shopping-cart"></span> Continue Shopping
-                                            </button>
-                                        </td>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>
+                                                <button type="button" class="btn btn-info" onclick="window.location.href='allbikes.php'">
+                                                    <span class="fa fa-shopping-cart"></span> Continue Shopping
+                                                </button>
+                                            </td>
 
-                                    </tr>
-                                </tbody>
-                            </table>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </form>
                         </div>
                     </div>
 
@@ -236,5 +243,19 @@ require('footer.php');
 
             }
         });
+    }
+
+    function setDate(input) {
+        const today = new Date();
+        const minDate = new Date(today);
+        minDate.setDate(minDate.getDate() + 3);
+
+        if (minDate.getMonth() !== today.getMonth()) {
+            minDate.setDate(1);
+            minDate.setMonth(minDate.getMonth() + 1);
+        }
+
+        const minDateString = minDate.toISOString().split('T')[0];
+        input.min = minDateString;
     }
 </script>

@@ -139,13 +139,12 @@ require('footer.php');
 
 
     $(document).ready(function() {
-        $('#filter, #cat').change(function() {
+        $('#cat').change(function() {
             $.ajax({
                 url: "php/allevents.php",
                 type: "post",
                 data: {
                     filterp: "check",
-                    filter: document.getElementById('filter').value,
                     cat: document.getElementById('cat').value,
                     search: document.getElementById('search').value
                 },
@@ -173,7 +172,6 @@ require('footer.php');
                     searchp: "check",
                     search: document.getElementById('search').value,
                     cat: document.getElementById('cat').value,
-                    filter: document.getElementById('filter').value
 
                 },
                 // beforeSend: function() {
