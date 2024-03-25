@@ -32,7 +32,7 @@
                                 icon: 'info',
                                 title: 'Account under verification!',
                             }).then((result) => {
-                                window.location.replace('../');
+                                window.location.replace('../users/company/profile.php');
                             });
                         </script>
                     <?php
@@ -61,7 +61,7 @@
                                 icon: 'info',
                                 title: 'Account under verification!',
                             }).then((result) => {
-                                window.location.replace('../');
+                                window.location.replace('../users/user/profile.php');
                             });
                         </script>
                     <?php

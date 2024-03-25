@@ -11,32 +11,32 @@
     session_start();
     require('../../../php/connect.php');
     if (isset($_POST['edit'])) {
-        $fname = $_POST['fname'];
-        $lname = $_POST['lname'];
+        $name = $_POST['name'];
+        $ownername = $_POST['ownername'];
         $email = $_SESSION['email'];
-        $contact_number = $_POST['mobile'];
-        $housename = $_POST['hname'];
-        $streetname = $_POST['sname'];
+        $phone = $_POST['phone'];
+        $place = $_POST['place'];
         $district = $_POST['district'];
-        $pincode = $_POST['pcode'];
-        $date_of_birth = $_POST['dob'];
-        $account_number = $_POST['accnum'];
-        $ifsc_code = $_POST['ifsccode'];
+        $pincode = $_POST['pincode'];
+        $est_date = $_POST['est_date'];
+        $acc_no = $_POST['acc_no'];
+        $ifsc_code = $_POST['ifsc_code'];
+        $about = $_POST['about'];
 
 
 
-        $sql = "UPDATE `customer` SET `first_name`='$fname',`last_name`='$lname',`phone_no`='$contact_number',`housename`='$housename',`streetname`='$streetname',`district`='$district',`pincode`='$pincode',`date_of_birth`='$date_of_birth',`ifsc_code`='$ifsc_code',`account_number`='$account_number' where email_id='$email'";
+        $sql = "UPDATE `company` SET `name`='$name',`ownername`='$ownername',`phone`='$phone',`place`='$place',`district`='$district',`pincode`='$pincode',`est_date`='$est_date',`ifsc_code`='$ifsc_code',`acc_no`='$acc_no',`about`='$about' where email='$email'";
 
         update($sql);
     ?>
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Updated successfully!',
-            }).then((result) => {
-                window.location.replace('../profile.php');
-            })
-        </script>
+    <script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Updated successfully!',
+    }).then((result) => {
+        window.location.replace('../profile.php');
+    })
+    </script>
 
     <?php
 

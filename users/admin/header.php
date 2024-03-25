@@ -109,6 +109,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 </a>
             </li>
             <li>
+                <a href="category.php">
+                    <i class="fa fa-cogs" aria-hidden="true"></i> <span class="nav-text">
+                        Category
+                    </span>
+                </a>
+            </li>
+            <li>
                 <a href="complaints.php">
                     <i class="fa fa-cogs" aria-hidden="true"></i> <span class="nav-text">
                         Complaints

@@ -56,7 +56,7 @@ require('header.php');
         <div class="blank">
             <div class="blank-page">
                 <?php
-                $sql = "select * from cart,events where events.event_id=wishlist.event_id and email='$email'";
+                $sql = "select * from cart,events,category where events.event_id=cart.event_id and category.cat_id=events.category and user='$email'";
                 $res = sel($sql);
                 $total = 0;
                 if (num($sql) == 0) {
@@ -86,41 +86,29 @@ require('header.php');
                                             <td class="col-sm-8 col-md-6">
                                                 <div class="media">
                                                     <?php
-                                                    $id = $row['bike_id'];
-                                                    $sql2 = "select * from bike_photos where bike_id='$id'";
+                                                    $id = $row['company_email'];
+                                                    $sql2 = "select * from company where email='$id'";
                                                     $res2 = sel($sql2);
                                                     $row2 = mysqli_fetch_assoc($res2);
                                                     ?>
-                                                    <a class="thumbnail pull-left" href="view.php?id=<?php echo $row['bike_id']; ?>"> <img class="media-object" src="../admin/uploads/bikes/<?php echo $row2['image']; ?>" style="width: 72px; height: 72px;"> </a>
+                                                    <a class="thumbnail pull-left" href=""> <img class="media-object" src="../company/uploads/profile/<?php echo $row2['profile_pic']; ?>" style="width: 72px; height: 72px;"> </a>
 
                                                     <div class="media-body" style="padding:5px;margin-left:5px;">
-                                                        <h4 class="media-heading"><a href="view.php?id=<?php echo $row['bike_id']; ?>"><?php echo $row['name']; ?></a>
+                                                        <h4 class="media-heading"><a href=""><?php echo $row['name']; ?></a>
                                                         </h4>
-                                                        <h5 class="media-heading"> by <?php echo $row['brand']; ?></h5>
-                                                        <span>Status: </span>
-                                                        <?php
-                                                        if ($row['stock'] > 0) {
-                                                        ?>
-                                                            <span class="text-success"><strong>In Stock</strong>
-                                                            </span>
-                                                        <?php
-                                                        } else {
-                                                        ?>
-                                                            <span class="text-danger"><strong>Out of Stock</strong>
-                                                            </span>
-                                                        <?php
-                                                        }
-                                                        ?>
+                                                        <h5 class="media-heading"> by <?php echo $row['cat_title']; ?></h5>
+
 
                                                     </div>
                                                 </div>
                                             </td>
                                             <td class="col-sm-1 col-md-1 text-center" style="vertical-align: middle;">
-                                                <strong><?php echo $row['price']; ?></strong>
+                                                <strong><?php //echo $row['price']; 
+                                                        ?></strong>
                                             </td>
                                             <td class="col-sm-1 col-md-1">
                                                 <div style="display: flex;align-items: center;justify-content: center;">
-                                                    <button type="button" class="btn btn-danger" onclick="remove(<?php echo $row['wishlist_id']; ?>)">
+                                                    <button type="button" class="btn btn-danger" onclick="remove(<?php echo $row['cart_id']; ?>)">
                                                         <span class="glyphicon glyphicon-remove"></span> Remove
                                                     </button>
                                                 </div>

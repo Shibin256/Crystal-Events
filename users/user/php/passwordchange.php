@@ -15,13 +15,13 @@
         $npass = $_POST['npass'];
         $email = $_SESSION['email'];
 
-        $sql = "select password from login where email_id='$email'";
+        $sql = "select password from login where email='$email'";
         $res = sel($sql);
         $row = mysqli_fetch_assoc($res);
         $pass = $row['password'];
 
         if ($pass == $cpass) {
-            $sql = "update login set password='$npass' where email_id='$email'";
+            $sql = "update login set password='$npass' where email='$email'";
             $res = sel($sql);
     ?>
             <script>

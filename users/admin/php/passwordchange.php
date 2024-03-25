@@ -9,7 +9,7 @@
 <body>
     <?php
     session_start();
-    require('../../../../php/connect.php');
+    require('../../../php/connect.php');
     if (isset($_POST['edit'])) {
         $cpass = $_POST['cpass'];
         $npass = $_POST['npass'];

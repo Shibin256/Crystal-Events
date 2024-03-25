@@ -1,7 +1,7 @@
 <?php
 require('header.php');
 
-$sql = "select * from users where email='$email'";
+$sql = "select * from company where email='$email'";
 $res = sel($sql);
 $row = mysqli_fetch_assoc($res);
 ?>
@@ -81,19 +81,13 @@ $row = mysqli_fetch_assoc($res);
                             </div>
                         </div>
                         <div class="progressbar-heading grids-heading" style="margin-bottom: 80px;">
-                            <h2><?php echo $row['firstname'] . " " . $row['lastname']; ?></h2>
+                            <h2><?php echo $row['name']; ?></h2>
                         </div>
                         <h4 style="margin-top: 15px;" id="h4.-bootstrap-heading"><?php echo $row['email']; ?></h4>
                         <h4 style="margin-top: 15px;" id="h4.-bootstrap-heading"><?php echo $row['phone']; ?></h4>
-                        <h4 style="margin-top: 15px;" id="h4.-bootstrap-heading"><?php echo $row['housename']; ?></h4>
-                        <h4 style="margin-top: 15px;" id="h4.-bootstrap-heading"><?php echo $row['place']; ?></h4>
-                        <h4 style="margin-top: 15px;" id="h4.-bootstrap-heading"><?php echo $row['district']; ?></h4>
-                        <h4 style="margin-top: 15px;" id="h4.-bootstrap-heading"><?php echo $row['pincode']; ?></h4>
-                        <h4 style="margin-top: 15px;" id="h4.-bootstrap-heading"><?php echo $row['date_of_birth']; ?>
-                        </h4>
-                        <h4 style="margin-top: 15px;" id="h4.-bootstrap-heading"><?php echo $row['acc_no']; ?>
-                        </h4>
-                        <h4 style="margin-top: 15px;" id="h4.-bootstrap-heading"><?php echo $row['ifsc_code']; ?></h4>
+                        <h4 style="margin-top: 15px;" id="h4.-bootstrap-heading"><?php echo $row['ownername']; ?></h4>
+                        <br><br>
+                        <p style="text-align: justify;"><?php echo $row['about']; ?></p>
                     </div>
 
 
@@ -112,20 +106,16 @@ $row = mysqli_fetch_assoc($res);
                                             <input type="email" name="email" disabled class="form-control" placeholder="Email" value="<?php echo $row['email']; ?>">
                                         </div>
                                         <div class="form-group">
-                                            <label for="">First name</label>
-                                            <input type="text" name="firstname" class="form-control" placeholder="First name" pattern="[A-Za-z ]+" title="Only letters and spaces are allowed" required value="<?php echo $row['firstname']; ?>">
+                                            <label for="">Name</label>
+                                            <input type="text" name="name" class="form-control" placeholder="Name" pattern="[A-Za-z ]+" title="Only letters and spaces are allowed" required value="<?php echo $row['name']; ?>">
                                         </div>
                                         <div class="form-group">
-                                            <label for="">Last name</label>
-                                            <input type="text" name="lastname" class="form-control" placeholder="Last name" pattern="[A-Za-z ]+" title="Only letters and spaces are allowed" required value="<?php echo $row['lastname']; ?>">
+                                            <label for="">Owner name</label>
+                                            <input type="text" name="ownername" class="form-control" placeholder="Owner Name" pattern="[A-Za-z ]+" title="Only letters and spaces are allowed" required value="<?php echo $row['ownername']; ?>">
                                         </div>
                                         <div class="form-group">
                                             <label for="">Mobile</label>
                                             <input type="text" name="phone" class="form-control" placeholder="mobile number" required pattern="\d{10}" title="Please enter a 10-digit phone number" value="<?php echo $row['phone']; ?>">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="">House Name</label>
-                                            <input type="text" name="housename" class="form-control" pattern="[A-Za-z0-9 ]+" title="Only letters,digits and spaces are allowed" placeholder="house name" required value="<?php echo $row['housename']; ?>">
                                         </div>
                                         <div class="form-group">
                                             <label for="">Street Name</label>
@@ -156,8 +146,8 @@ $row = mysqli_fetch_assoc($res);
                                             <input type="text" name="pincode" class="form-control" placeholder="pincode" pattern="\d{6}" title="Please enter a 6-digit pin number" required value="<?php echo $row['pincode']; ?>">
                                         </div>
                                         <div class="form-group">
-                                            <label for="">Date Of Birth</label>
-                                            <input type="date" name="date_of_birth" class="form-control" placeholder="date of birth" required value="<?php echo $row['date_of_birth']; ?>">
+                                            <label for="">Established date</label>
+                                            <input type="date" name="est_date" class="form-control" placeholder="date of birth" required value="<?php echo $row['est_date']; ?>">
                                         </div>
                                         <div class="form-group">
                                             <label for="">Account number</label>
@@ -166,6 +156,10 @@ $row = mysqli_fetch_assoc($res);
                                         <div class="form-group">
                                             <label for="">IFSC Code</label>
                                             <input type="text" name="ifsc_code" class="form-control" placeholder="ifsc codes" pattern="[A-Z]{4}\d{7}" title="Please enter a valid IFSC code " required value="<?php echo $row['ifsc_code']; ?>">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">About</label>
+                                            <textarea name="about" rows="10" class="form-control" placeholder="About" pattern="[A-Za-z ]+" title="Please enter a valid data" required><?php echo $row['about']; ?></textarea>
                                         </div>
                                         <button type="submit" class="btn btn-default w3ls-button" name="edit">Submit</button>
                                     </form>
@@ -187,13 +181,12 @@ require('footer.php');
 ?>
 <script>
     function validateForm() {
-        var fnameInput = document.getElementById('fname');
-        var lnameInput = document.getElementById('lname');
+        var nameInput = document.getElementById('name');
         var emailInput = document.getElementById('email');
         var phoneInput = document.getElementById('number');
-        var hnameInput = document.getElementById('hname');
-        var snameInput = document.getElementById('sname');
-        var pcodeInput = document.getElementById('pcode');
+        var ownernameInput = document.getElementById('ownername');
+        var placeInput = document.getElementById('place');
+        var pcodeInput = document.getElementById('pincode');
         var accountNumberInput = document.getElementById('accnum');
         var ifscCodeInput = document.getElementById('ifsccode');
 
@@ -205,7 +198,7 @@ require('footer.php');
         var accountNumberPattern = /\d{11,16}/;
         var ifscCodePattern = /[A-Za-z]{4}\d{7}/;
 
-        if (!namePattern.test(fnameInput.value)) {
+        if (!namePattern.test(nameInput.value)) {
             alert('Please enter a valid name (only letters and spaces are allowed).');
             return false;
         }
@@ -213,11 +206,11 @@ require('footer.php');
             alert('Please enter a valid name (only letters and spaces are allowed).');
             return false;
         }
-        if (!placePattern.test(hnameInput.value)) {
+        if (!placePattern.test(ownernameInput.value)) {
             alert('Please enter a valid name ');
             return false;
         }
-        if (!placePattern.test(snameInput.value)) {
+        if (!placePattern.test(placeInput.value)) {
             alert('Please enter a valid name ');
             return false;
         }

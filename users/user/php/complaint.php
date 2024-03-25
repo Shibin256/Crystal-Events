@@ -18,7 +18,7 @@
 
 
 
-        $sql = "insert into complaint(email_id,topic,complaint,submitted_date) values ('$email','$topic','$description','$cdate')";
+        $sql = "insert into complaint(email,topic,complaint,submitted_date) values ('$email','$topic','$description','$cdate')";
 
         update($sql);
     ?>

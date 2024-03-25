@@ -7,14 +7,21 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <?php
 session_start();
 if (!isset($_SESSION['email'])) {
-    echo "<script>window.location.replace('../index.html')</script>";
+    echo "<script>window.location.replace('../../index.html')</script>";
 }
 $email = $_SESSION['email'];
 require('../../php/connect.php');
 
+
+$sql = "select status from login where email='$email'";
+$res = sel($sql);
+$row = mysqli_fetch_assoc($res);
+$status = $row['status'];
+
 $sql = "select * from users where email='$email'";
 $res = sel($sql);
 $row = mysqli_fetch_assoc($res);
+
 
 $sql2 = "select * from cart where user='$email'";
 $cartcount = num($sql2);
@@ -29,26 +36,23 @@ $cartcount = num($sql2);
     <meta name="keywords" content="Colored Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
 Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
     <script type="application/x-javascript">
-    addEventListener("load", function() {
-        setTimeout(hideURLbar, 0);
-    }, false);
+        addEventListener("load", function() {
+            setTimeout(hideURLbar, 0);
+        }, false);
 
-    function hideURLbar() {
-        window.scrollTo(0, 1);
-    }
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
     </script>
     <!-- bootstrap-css -->
     <!-- <link rel="stylesheet" href="css/bootstrap.css"> -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
-        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
     <!-- //bootstrap-css -->
     <!-- Custom CSS -->
     <link href="css/style.css" rel='stylesheet' type='text/css' />
     <!-- font CSS -->
-    <link
-        href='//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic'
-        rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
     <!-- font-awesome icons -->
     <link rel="stylesheet" href="css/font.css" type="text/css" />
     <link href="css/font-awesome.css" rel="stylesheet">
@@ -58,31 +62,31 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <script src="js/jquery.cookie.js"></script>
     <script src="js/screenfull.js"></script>
     <script>
-    $(function() {
-        $('#supported').text('Supported/allowed: ' + !!screenfull.enabled);
+        $(function() {
+            $('#supported').text('Supported/allowed: ' + !!screenfull.enabled);
 
-        if (!screenfull.enabled) {
-            return false;
-        }
+            if (!screenfull.enabled) {
+                return false;
+            }
 
 
 
-        $('#toggle').click(function() {
-            screenfull.toggle($('#container')[0]);
+            $('#toggle').click(function() {
+                screenfull.toggle($('#container')[0]);
+            });
         });
-    });
     </script>
     <style>
-    .dropdown-toggle::after {
-        display: none;
-    }
+        .dropdown-toggle::after {
+            display: none;
+        }
 
-    .show {
-        opacity: 1 !important;
-        height: 100% !important;
-        overflow: visible !important;
+        .show {
+            opacity: 1 !important;
+            height: 100% !important;
+            overflow: visible !important;
 
-    }
+        }
     </style>
 </head>
 
@@ -90,14 +94,20 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
     <nav class="main-menu">
         <ul>
-            <li id="dash">
-                <a href="index.php" onclick="changem('dash')">
-                    <i class="fa fa-home nav_icon"></i>
-                    <span class="nav-text">
-                        Home
-                    </span>
-                </a>
-            </li>
+            <?php
+            if ($status == 1) {
+            ?>
+                <li id="dash">
+                    <a href="index.php" onclick="changem('dash')">
+                        <i class="fa fa-home nav_icon"></i>
+                        <span class="nav-text">
+                            Home
+                        </span>
+                    </a>
+                </li>
+            <?php
+            }
+            ?>
             <li id="pro">
                 <a href="profile.php" onclick="changem('pro')">
                     <i class="fa fa-user nav_icon"></i>
@@ -107,53 +117,63 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 </a>
             </li>
 
-            <li id="bikes">
-                <a href="allbikes.php" onclick="changem('bikes')">
-                    <i class="fa fa-search nav_icon"></i>
-                    <span class="nav-text">
-                        Bikes
-                    </span>
-                </a>
-            </li>
-            <li id="cart">
-                <a href="cart.php" onclick="changem('cart')">
-                    <i class="fa fa-heart-o nav_icon"></i>
-                    <span class="nav-text">
-                        Cart
-                    </span>
-                </a>
-            </li>
+            <?php
+            if ($status == 1) {
+            ?>
+                <li id="bikes">
+                    <a href="allevents.php" onclick="changem('bikes')">
+                        <i class="fa fa-search nav_icon"></i>
+                        <span class="nav-text">
+                            Events
+                        </span>
+                    </a>
+                </li>
+                <li id="cart">
+                    <a href="cart.php" onclick="changem('cart')">
+                        <i class="fa fa-heart-o nav_icon"></i>
+                        <span class="nav-text">
+                            Cart
+                        </span>
+                    </a>
+                </li>
 
-            <li class="has-subnav" id="book">
-                <a href="javascript:;">
-                    <i class="fa fa-suitcase nav_icon"></i>
-                    <span class="nav-text">
-                        Bookings
-                    </span>
-                    <i class="icon-angle-right"></i><i class="icon-angle-down"></i>
-                </a>
-                <ul>
-                    <li>
-                        <a class="subnav-text" href="order.php" onclick="changem('book')">
-                            Bikes
-                        </a>
-                    </li>
-                    <li>
-                        <a class="subnav-text" href="test_book.php" onclick="changem('book')">
-                            Test Drive
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li id="comp">
-                <a href="complaint.php" onclick="changem('comp')">
-                    <i class="fa fa-pencil nav_icon"></i>
-                    <span class="nav-text">
-                        Complaint
-                    </span>
-                </a>
-            </li>
-
+                <li class="has-subnav">
+                    <a href="javascript:;">
+                        <i class="fa fa-search nav_icon"></i>
+                        <span class="nav-text">
+                            Bookings
+                        </span>
+                        <i class="icon-angle-right"></i><i class="icon-angle-down"></i>
+                    </a>
+                    <ul>
+                        <li>
+                            <a class="subnav-text" href="book_pending.php">
+                                Pending
+                            </a>
+                        </li>
+                        <li>
+                            <a class="subnav-text" href="book_approved.php">
+                                Approved
+                            </a>
+                        </li>
+                        <li>
+                            <a class="subnav-text" href="book_completed.php">
+                                Completed
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li id="comp">
+                    <a href="complaint.php" onclick="changem('comp')">
+                        <i class="fa fa-pencil nav_icon"></i>
+                        <span class="nav-text">
+                            Complaint
+                        </span>
+                    </a>
+                </li>
+            <?php
+            }
+            ?>
         </ul>
         <ul class="logout">
             <li>
@@ -190,11 +210,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <ul class="nofitications-dropdown">
 
                             <li class="dropdown head-dpdn">
-                                <a href="wishlist.php" class="dropdown-toggle"><i class="fa fa-shopping-cart"></i>
+                                <a href="cart.php" class="dropdown-toggle"><i class="fa fa-shopping-cart"></i>
                                     <?php
                                     if ($cartcount != 0) {
                                     ?>
-                                    <span class="badge blue1"><?php echo $cartcount; ?></span>
+                                        <span class="badge blue1"><?php echo $cartcount; ?></span>
                                     <?php
                                     }
                                     ?>
@@ -206,29 +226,22 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     </div>
 
 
-                    <div class="profile_details"
-                        style="background-color: #00bcd4;padding: 5px 15px 5px 5px;border-radius: 20px;width: fit-content;">
+                    <div class="profile_details" style="background-color: #00bcd4;padding: 5px 15px 5px 5px;border-radius: 20px;width: fit-content;">
                         <ul>
 
                             <li class="dropdown profile_details_drop">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                     <div class="profile_img">
-                                        <img class="prfil-img" style="width: 33px;height: 33px;border-radius: 50%;"
-                                            src="<?php echo 'uploads/profile/' . $row['profile_pic']; ?>"
-                                            alt="Profile Image">
-                                        <span
-                                            style="color: white;"><?php echo $row['firstname'] . " " . $row['lastname']; ?></span>
+                                        <img class="prfil-img" style="width: 33px;height: 33px;border-radius: 50%;" src="<?php echo 'uploads/profile/' . $row['profile_pic']; ?>" alt="Profile Image">
+                                        <span style="color: white;"><?php echo $row['firstname'] . " " . $row['lastname']; ?></span>
                                         <div class="clearfix"></div>
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu extended">
-                                    <li style="width: 100%;padding: 10px 5px;"> <a href="password.php"><i
-                                                class="fa fa-cog"></i> Change Password</a> </li>
-                                    <li style="width: 100%;padding: 10px 5px;"> <a href="profile.php"><i
-                                                class="fa fa-user"></i>
+                                    <li style="width: 100%;padding: 10px 5px;"> <a href="password.php"><i class="fa fa-cog"></i> Change Password</a> </li>
+                                    <li style="width: 100%;padding: 10px 5px;"> <a href="profile.php"><i class="fa fa-user"></i>
                                             Profile</a> </li>
-                                    <li style="width: 100%;padding: 10px 5px;"> <a href="javascript:;"
-                                            onclick="logout()"><i class="fa fa-sign-out"></i>
+                                    <li style="width: 100%;padding: 10px 5px;"> <a href="javascript:;" onclick="logout()"><i class="fa fa-sign-out"></i>
                                             Logout</a> </li>
                                 </ul>
                             </li>
