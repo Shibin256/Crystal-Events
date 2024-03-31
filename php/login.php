@@ -41,7 +41,7 @@
                         <script>
                             Swal.fire({
                                 icon: 'success',
-                                title: 'Welcome Back User!',
+                                title: 'Welcome Back Company!',
                             }).then((result) => {
                                 window.location.replace('../users/company/');
                             });

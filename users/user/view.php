@@ -509,7 +509,7 @@ require('footer.php');
             "amount": 50000 *
                 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
             "currency": "INR",
-            "name": "AutoDoc",
+            "name": "CrystalEvents",
             "description": "Payment",
             //"order_id": "order_9A33XWu170gUtm", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
             // "callback_url": "php/success.php?id=" + id,
@@ -572,9 +572,9 @@ require('footer.php');
             "amount": 500 *
                 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
             "currency": "INR",
-            "name": "AutoDoc",
+            "name": "CrystalEvents",
             "description": "Payment",
-           
+
             //"order_id": "order_9A33XWu170gUtm", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
             "handler": function(response) {
                 console.log(response);

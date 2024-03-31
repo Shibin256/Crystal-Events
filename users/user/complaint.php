@@ -32,14 +32,12 @@ require('header.php');
                             <form action="php/complaint.php" method="post">
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Topic</label>
-                                    <input type="text" class="form-control" placeholder="Topic" name="topic"
-                                        id="recipient-rname" required="">
+                                    <input type="text" class="form-control" placeholder="Topic" name="topic" id="recipient-rname" required="">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Description</label>
-                                    <textarea rows=5 class="form-control" placeholder="Description" name="description"
-                                        id="recipient-rname" required=""></textarea>
+                                    <textarea rows=5 class="form-control" placeholder="Description" name="description" id="recipient-rname" required=""></textarea>
                                 </div>
 
 
@@ -53,7 +51,7 @@ require('header.php');
         </div>
         <div class="blank" style="min-height: auto;">
             <div class="blank-page">
-                <table id="table" class="">
+                <table id="table" class="table-responsive">
                     <thead>
 
                         <tr>
@@ -71,20 +69,20 @@ require('header.php');
 
                         while ($row = mysqli_fetch_assoc($res)) {
                         ?>
-                        <tr>
-                            <td><?php echo $row['topic']; ?></td>
-                            <td><?php echo $row['complaint']; ?></td>
-                            <td><?php echo date_format(date_create($row['submitted_date']), 'd-m-Y h:i A'); ?></td>
-                            <td><?php echo $row['reply']; ?></td>
-                            <td>
-                                <?php
+                            <tr>
+                                <td><?php echo $row['topic']; ?></td>
+                                <td><?php echo $row['complaint']; ?></td>
+                                <td><?php echo date_format(date_create($row['submitted_date']), 'd-m-Y h:i A'); ?></td>
+                                <td><?php echo $row['reply']; ?></td>
+                                <td>
+                                    <?php
                                     if ($row['status'] == 1)
                                         echo "<p style='color: orange;'>Pending</p>";
                                     else if ($row['status'] == 2)
                                         echo "<p style='color: red;'>Closed</p>";
                                     ?>
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
 
                         <?php
                         }
@@ -115,40 +113,40 @@ require('footer.php');
 <script src="https://cdn.datatables.net/datetime/1.5.1/js/dataTables.dateTime.min.js"></script>
 
 <script type="text/javascript">
-$(document).ready(function() {
-    let table = new DataTable('#table', {
-        order: [],
-        dom: 'lBfrtip',
-        buttons: [{
-            extend: 'copyHtml5',
-            text: '<i class="fa fa-copy"> Copy</i>',
-        }, {
-            extend: 'excelHtml5',
-            title: "Orders(<?php echo $email; ?>) - AutoDoc",
-            text: '<i class="fa fa-file-excel-o"> Excel</i>',
-            exportOptions: {
-                columns: 'th:not(:last-child)'
-            }
-        }, {
-            extend: 'pdfHtml5',
-            title: "Orders(<?php echo $email; ?>) - AutoDoc",
-            orientation: 'landscape',
-            pageSize: 'A3',
-            text: '<i class="fa fa-file-pdf-o"> PDF</i>',
-            titleAttr: 'PDF',
-            exportOptions: {
-                columns: 'th:not(:last-child)'
-            }
-        }, {
-            extend: 'print',
-            title: "Orders(<?php echo $email; ?>) - AutoDoc",
-            orientation: 'landscape',
-            pageSize: 'A4',
-            text: '<i class="fa fa-print"> Print</i>',
-            exportOptions: {
-                columns: 'th:not(:last-child)'
-            }
-        }],
+    $(document).ready(function() {
+        let table = new DataTable('#table', {
+            order: [],
+            dom: 'lBfrtip',
+            buttons: [{
+                extend: 'copyHtml5',
+                text: '<i class="fa fa-copy"> Copy</i>',
+            }, {
+                extend: 'excelHtml5',
+                title: "Orders(<?php echo $email; ?>) - CrystalEvents",
+                text: '<i class="fa fa-file-excel-o"> Excel</i>',
+                exportOptions: {
+                    columns: 'th:not(:last-child)'
+                }
+            }, {
+                extend: 'pdfHtml5',
+                title: "Orders(<?php echo $email; ?>) - CrystalEvents",
+                orientation: 'landscape',
+                pageSize: 'A3',
+                text: '<i class="fa fa-file-pdf-o"> PDF</i>',
+                titleAttr: 'PDF',
+                exportOptions: {
+                    columns: 'th:not(:last-child)'
+                }
+            }, {
+                extend: 'print',
+                title: "Orders(<?php echo $email; ?>) - CrystalEvents",
+                orientation: 'landscape',
+                pageSize: 'A4',
+                text: '<i class="fa fa-print"> Print</i>',
+                exportOptions: {
+                    columns: 'th:not(:last-child)'
+                }
+            }],
+        });
     });
-});
 </script>

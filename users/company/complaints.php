@@ -24,7 +24,7 @@ require('header.php');
         <!-- //blank-page -->
         <div class="blank">
             <div class="blank-page">
-                <table id="table" class="">
+                <table id="table" class="table-responsive">
                     <thead>
 
                         <tr>
@@ -46,38 +46,36 @@ require('header.php');
 
                         while ($row = mysqli_fetch_assoc($res)) {
                         ?>
-                        <tr>
-                            <td><?php echo $row['complaint_id']; ?></td>
-                            <td><?php echo $row['topic']; ?></td>
-                            <td><?php echo $row['complaint']; ?></td>
-                            <td><?php echo date_format(date_create($row['submitted_date']), 'd-m-Y h:i A'); ?></td>
-                            <td><?php echo $row['first_name'] . " " . $row['last_name']; ?></td>
-                            <td><?php echo $row['email_id']; ?></td>
-                            <td><?php echo $row['reply']; ?></td>
-                            <td>
-                                <?php
+                            <tr>
+                                <td><?php echo $row['complaint_id']; ?></td>
+                                <td><?php echo $row['topic']; ?></td>
+                                <td><?php echo $row['complaint']; ?></td>
+                                <td><?php echo date_format(date_create($row['submitted_date']), 'd-m-Y h:i A'); ?></td>
+                                <td><?php echo $row['first_name'] . " " . $row['last_name']; ?></td>
+                                <td><?php echo $row['email_id']; ?></td>
+                                <td><?php echo $row['reply']; ?></td>
+                                <td>
+                                    <?php
                                     if ($row['status'] == 1)
                                         echo "<p style='color: orange;'>Pending</p>";
                                     else if ($row['status'] == 2)
                                         echo "<p style='color: red;'>Closed</p>";
                                     ?>
-                            </td>
-                            <td>
-                                <?php
+                                </td>
+                                <td>
+                                    <?php
                                     if ($row['status'] == 1) {
                                     ?>
-                                <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
-                                    data-target="#exampleModal"
-                                    onclick="document.getElementById('complaint_id').value='<?php echo $row['complaint_id']; ?>';">
-                                    Update
-                                </button>
-                                <?php
+                                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="document.getElementById('complaint_id').value='<?php echo $row['complaint_id']; ?>';">
+                                            Update
+                                        </button>
+                                    <?php
                                     } else {
                                         echo "-";
                                     }
                                     ?>
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
 
                         <?php
                         }
@@ -91,8 +89,7 @@ require('header.php');
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -134,40 +131,40 @@ require('header.php');
     <script src="https://cdn.datatables.net/datetime/1.5.1/js/dataTables.dateTime.min.js"></script>
 
     <script type="text/javascript">
-    $(document).ready(function() {
-        let table = new DataTable('#table', {
-            order: [],
-            dom: 'lBfrtip',
-            buttons: [{
-                extend: 'copyHtml5',
-                text: '<i class="fa fa-copy"> Copy</i>',
-            }, {
-                extend: 'excelHtml5',
-                title: "Orders(<?php echo $email; ?>) - AutoDoc",
-                text: '<i class="fa fa-file-excel-o"> Excel</i>',
-                exportOptions: {
-                    columns: 'th:not(:last-child)'
-                }
-            }, {
-                extend: 'pdfHtml5',
-                title: "Orders(<?php echo $email; ?>) - AutoDoc",
-                orientation: 'landscape',
-                pageSize: 'A3',
-                text: '<i class="fa fa-file-pdf-o"> PDF</i>',
-                titleAttr: 'PDF',
-                exportOptions: {
-                    columns: 'th:not(:last-child)'
-                }
-            }, {
-                extend: 'print',
-                title: "Orders(<?php echo $email; ?>) - AutoDoc",
-                orientation: 'landscape',
-                pageSize: 'A4',
-                text: '<i class="fa fa-print"> Print</i>',
-                exportOptions: {
-                    columns: 'th:not(:last-child)'
-                }
-            }],
+        $(document).ready(function() {
+            let table = new DataTable('#table', {
+                order: [],
+                dom: 'lBfrtip',
+                buttons: [{
+                    extend: 'copyHtml5',
+                    text: '<i class="fa fa-copy"> Copy</i>',
+                }, {
+                    extend: 'excelHtml5',
+                    title: "Orders(<?php echo $email; ?>) - CrystalEvents",
+                    text: '<i class="fa fa-file-excel-o"> Excel</i>',
+                    exportOptions: {
+                        columns: 'th:not(:last-child)'
+                    }
+                }, {
+                    extend: 'pdfHtml5',
+                    title: "Orders(<?php echo $email; ?>) - CrystalEvents",
+                    orientation: 'landscape',
+                    pageSize: 'A3',
+                    text: '<i class="fa fa-file-pdf-o"> PDF</i>',
+                    titleAttr: 'PDF',
+                    exportOptions: {
+                        columns: 'th:not(:last-child)'
+                    }
+                }, {
+                    extend: 'print',
+                    title: "Orders(<?php echo $email; ?>) - CrystalEvents",
+                    orientation: 'landscape',
+                    pageSize: 'A4',
+                    text: '<i class="fa fa-print"> Print</i>',
+                    exportOptions: {
+                        columns: 'th:not(:last-child)'
+                    }
+                }],
+            });
         });
-    });
     </script>

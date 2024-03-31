@@ -1,6 +1,6 @@
     <!-- footer -->
     <div class="footer">
-        <p>© 2023 Autodoc . All Rights Reserved . Design by <a href="">Shibin K P</a></p>
+        <p>© 2023 CrystalEvents . All Rights Reserved . Design by <a href="">Shibin K P</a></p>
     </div>
     <!-- //footer -->
     </section>

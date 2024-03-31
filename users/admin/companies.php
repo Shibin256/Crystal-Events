@@ -19,7 +19,7 @@ require('header.php');
 
         <div class="banner">
             <h2>
-                <a href="index.html">Home</a>
+                <a href=".php">Home</a>
                 <i class="fa fa-angle-right"></i>
                 <span>Blank</span>
             </h2>
@@ -27,7 +27,7 @@ require('header.php');
 
         <div class="blank">
             <div class="blank-page">
-                <table id="table" class="">
+                <table id="table" class="table-responsive">
                     <thead>
                         <tr>
                             <th>Name</th>

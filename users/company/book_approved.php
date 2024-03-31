@@ -11,80 +11,82 @@ require('header.php');
 <link href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css" rel="stylesheet">
 <link href="https://cdn.datatables.net/datetime/1.5.1/css/dataTables.dateTime.min.css" rel="stylesheet">
 
-
 <div class="main-grid">
     <div class="agile-grids">
         <!-- blank-page -->
 
         <div class="banner">
             <h2>
-                <a href="index.html">Home</a>
+                <a href="index.php">Home</a>
                 <i class="fa fa-angle-right"></i>
-                <span>Blank</span>
+                <span>Approved Bookings</span>
             </h2>
         </div>
 
         <div class="blank">
             <div class="blank-page">
-                <table id="table">
+                <table id="table" class="table-responsive">
                     <thead>
                         <tr>
-                            <th>OrderID</th>
-                            <th>Bike</th>
+                            <th>BookID</th>
+                            <th>event</th>
                             <th>User</th>
                             <th>User Email</th>
-                            <th>Ordered Date</th>
-                            <th>Delivered Date</th>
-                            <th>Price</th>
-                            <th>Booking Price</th>
-                            <th>Status</th>
+                            <th>Event DateTime</th>
+                            <th>Event Place</th>
+                            <th>Event District</th>
+                            <th>Event Pincode</th>
+                            <th>Requirements</th>
+                            <th>Company Reply</th>
+                            <th>Pay Status</th>
                             <th>Action</th>
-
 
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                        $sql = "select * from pro_order,bike,customer where customer.email_id=pro_order.email_id and bike.bike_id=pro_order.bike_id order by status,order_date,delivered_date";
+                        $sql = "select bookings.*,events.*,users.*,category.*,events.name as event_name  from bookings,events,users,category where users.email=bookings.user_email and category.cat_id=events.category and events.event_id=bookings.event_id and company_email='$email' and book_status=2 order by book_status,event_date_time";
                         $res = sel($sql);
 
                         while ($row = mysqli_fetch_assoc($res)) {
                         ?>
                             <tr>
-                                <td><?php echo $row['order_id']; ?></td>
-                                <td><a href="view.php?id=<?php echo $row['bike_id']; ?>"><?php echo $row['name']; ?></a>
-                                <td><?php echo $row['first_name'] . " " . $row['last_name']; ?></td>
-                                <td><?php echo $row['email_id']; ?></td>
-                                <td><?php echo date_format(date_create($row['order_date']), 'd-m-Y h:i A'); ?></td>
+                                <td><?php echo $row['book_id']; ?></td>
+                                <td><a href="javascript:;" data-toggle="modal" data-target="#exampleModal" onclick="{document.getElementById('name').innerHTML='<?php echo $row['event_name']; ?>';document.getElementById('category').innerHTML='<?php echo $row['cat_title']; ?>';document.getElementById('description').innerHTML='<?php echo $row['description']; ?>'}"><?php echo $row['event_name']; ?></a>
+                                <td><?php echo $row['firstname'] . " " . $row['lastname']; ?></td>
+                                <td><?php echo $row['email']; ?></td>
+                                <td><?php echo date_format(date_create($row['event_date_time']), 'd-m-Y h:i A'); ?></td>
+                                <td><?php echo $row['event_place']; ?></td>
+                                <td><?php echo $row['event_district']; ?></td>
+                                <td><?php echo $row['event_pincode']; ?></td>
+                                <td><?php echo $row['requirements']; ?></td>
+                                <td><?php echo $row['reply']; ?></td>
                                 <td>
                                     <?php
-                                    if ($row['delivered_date'] != NULL)
-                                        echo date_format(date_create($row['delivered_date']), 'd-m-Y h:i A');
-                                    else
-                                        echo "-";
+                                    if ($row['pay_id1'] == 0) {
                                     ?>
-                                </td>
-                                <td>₹ <?php echo $row['price']; ?></td>
-                                <td>₹ 50000</td>
-                                <td>
+                                        <p class="text-warning">Pending</p>
                                     <?php
-                                    if ($row['status'] == 1)
-                                        echo "<p style='color: orange;'>Pending</p>";
-                                    else if ($row['status'] == 2)
-                                        echo "<p style='color: green;'>Completed</p>";
+                                    } else if ($row['pay_id2'] == 0) {
                                     ?>
-                                </td>
-                                <td>
-                                    <?php
-                                    if ($row['status'] == 1) {
-                                    ?>
-                                        <button class="btn btn-sm btn-primary" onclick="update(<?php echo $row['order_id']; ?>,<?php echo $row['status'] + 1; ?>,'<?php echo $row['email_id']; ?>')">Update
-                                            to<br> Delivered</button>
+                                        <p class="text-info">Balance Pending</p>
                                     <?php
                                     } else {
-                                        echo "-";
+                                    ?>
+                                        <p class="text-success">Completed</p>
+                                    <?php
                                     }
-
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    if ($row['book_status'] == 2 && $row['pay_id2'] != 0) {
+                                    ?>
+                                        <div class="btn-group">
+                                            <button class="btn btn-sm btn-success" onclick="complete('<?php echo $row['book_id']; ?>')">Mark as Completed</button>
+                                        </div>
+                                    <?php
+                                    }
                                     ?>
                                 </td>
                             </tr>
@@ -99,6 +101,34 @@ require('header.php');
         <!-- //blank-page -->
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Event Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card-body">
+                    <h5 class="card-title" id="name"></h5>
+                    <h6 class="card-title" id="category"></h6>
+                    <p class="card-text" id="description"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 
 <?php
 require('footer.php');
@@ -124,14 +154,14 @@ require('footer.php');
                 text: '<i class="fa fa-copy"> Copy</i>',
             }, {
                 extend: 'excelHtml5',
-                title: "Orders(<?php echo $email; ?>) - AutoDoc",
+                title: "Orders(<?php echo $email; ?>) - CrystalEvents",
                 text: '<i class="fa fa-file-excel-o"> Excel</i>',
                 exportOptions: {
                     columns: 'th:not(:last-child)'
                 }
             }, {
                 extend: 'pdfHtml5',
-                title: "Orders(<?php echo $email; ?>) - AutoDoc",
+                title: "Orders(<?php echo $email; ?>) - CrystalEvents",
                 orientation: 'landscape',
                 pageSize: 'A3',
                 text: '<i class="fa fa-file-pdf-o"> PDF</i>',
@@ -141,7 +171,7 @@ require('footer.php');
                 }
             }, {
                 extend: 'print',
-                title: "Orders(<?php echo $email; ?>) - AutoDoc",
+                title: "Orders(<?php echo $email; ?>) - CrystalEvents",
                 orientation: 'landscape',
                 pageSize: 'A4',
                 text: '<i class="fa fa-print"> Print</i>',
@@ -152,9 +182,9 @@ require('footer.php');
         });
     });
 
-    function update(order_id, status, email) {
+    function complete(book_id) {
         Swal.fire({
-            title: 'Order Update',
+            title: 'Booking Status',
             text: "Are you sure want to update?",
             icon: 'question',
             showClass: {
@@ -170,12 +200,11 @@ require('footer.php');
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: "php/order_status.php",
+                    url: "php/book_approved.php",
                     type: "post",
                     data: {
-                        order_id: order_id,
-                        status: status,
-                        email: email
+                        complete: "complete",
+                        book_id: book_id
                     },
                     beforeSend: function() {
                         Swal.fire({

@@ -11,21 +11,21 @@
     session_start();
     require('../../../php/connect.php');
     if (isset($_POST['add'])) {
-        $order_id = $_POST['order_id'];
+        $book_id = $_POST['book_id'];
         $rate = $_POST['rate'];
         $rdate = date('Y-m-d H:i:s');
         $review = $_POST['review'];
 
-        $sql = "update pro_order set rating='$rate',review='$review',review_date='$rdate' where order_id='$order_id'";
+        $sql = "insert into review (review,star,review_date,book_id) values ('$review','$rate','$rdate','$book_id')";
 
-        update($sql);
+        insert($sql);
     ?>
         <script>
             Swal.fire({
                 icon: 'success',
                 title: 'Review Added Successfully!',
             }).then((result) => {
-                window.location.replace('../order.php');
+                window.location.replace('../book_completed.php');
             })
         </script>
 

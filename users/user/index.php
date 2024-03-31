@@ -17,7 +17,7 @@ if ($status == 0) {
 
         <div class="banner">
             <h2>
-                <a href="index.html">Home</a>
+                <a href="index.php">Home</a>
                 <i class="fa fa-angle-right"></i>
                 <span>Home</span>
             </h2>
@@ -46,26 +46,6 @@ if ($status == 0) {
                                     <p class="card-text"><?php echo $row['description']; ?></p>
                                 </div>
                                 <div class="card-footer">
-                                    <div style="display: flex;justify-content: space-evenly">
-                                        <?php
-                                        $sql2 = "select * from cart where user='$email' and event_id=" . $row['event_id'];
-                                        $num = num($sql2);
-                                        if ($num != 0) {
-                                        ?>
-                                            <div class="heart" style="border: none;background: transparent;" onclick="removecart(<?php echo $row['event_id']; ?>)"><button class="btn btn-danger btn-sm">Remove from Cart</button></div>
-                                        <?php
-                                        } else {
-                                        ?>
-                                            <div class="heart" style="border: none;background: transparent;" onclick="addcart(<?php echo $row['event_id']; ?>)"><button class="btn btn-primary btn-sm">Add to Cart</button></div>
-
-                                        <?php
-                                        }
-                                        ?>
-                                        <!-- <button class="btn btn-sm btn-primary"
-                                    onclick="window.location.href='view.php?id=<?php //echo $row['event_id']; 
-                                                                                ?>'"><i
-                                        class="fa fa-eye"></i> View</button> -->
-                                    </div>
                                 </div>
                             </div>
                         </div>

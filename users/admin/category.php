@@ -47,7 +47,7 @@ require('header.php');
             </div>
             <div class="blank" style="min-height: auto;">
                 <div class="blank-page">
-                    <table id="table" class="">
+                    <table id="table" class="table-responsive">
                         <thead>
 
                             <tr>
@@ -104,14 +104,14 @@ require('header.php');
                     text: '<i class="fa fa-copy"> Copy</i>',
                 }, {
                     extend: 'excelHtml5',
-                    title: "Orders(<?php echo $email; ?>) - AutoDoc",
+                    title: "Orders(<?php echo $email; ?>) - CrystalEvents",
                     text: '<i class="fa fa-file-excel-o"> Excel</i>',
                     exportOptions: {
                         columns: 'th:not(:last-child)'
                     }
                 }, {
                     extend: 'pdfHtml5',
-                    title: "Orders(<?php echo $email; ?>) - AutoDoc",
+                    title: "Orders(<?php echo $email; ?>) - CrystalEvents",
                     orientation: 'landscape',
                     pageSize: 'A3',
                     text: '<i class="fa fa-file-pdf-o"> PDF</i>',
@@ -121,7 +121,7 @@ require('header.php');
                     }
                 }, {
                     extend: 'print',
-                    title: "Orders(<?php echo $email; ?>) - AutoDoc",
+                    title: "Orders(<?php echo $email; ?>) - CrystalEvents",
                     orientation: 'landscape',
                     pageSize: 'A4',
                     text: '<i class="fa fa-print"> Print</i>',

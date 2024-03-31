@@ -69,18 +69,20 @@ require('header.php');
                 ?>
                     <div class="row">
                         <div class="col-sm-12">
-                            <form>
+                            <form method="post" action="php/cart.php">
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
                                             <th>Item</th>
-                                            <th>Event Date</th>
+                                            <th>Event Date & Time</th>
+                                            <th>Location</th>
                                             <th>Requirements</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
+                                        $n = 1;
                                         while ($row = mysqli_fetch_assoc($res)) {
 
                                         ?>
@@ -105,14 +107,36 @@ require('header.php');
                                                     </div>
                                                 </td>
                                                 <td class="" style="vertical-align: middle;">
-                                                    <input type="date" class="form-control" name="<?php echo $row['event_id'] . '_date'; ?>" required>
+                                                    <input type="hidden" name="<?php echo 'event_id' . $n; ?>" value="<?php echo $row['event_id']; ?>" required>
+                                                    <input type="datetime-local" class="form-control" name="<?php echo $row['event_id'] . '_date'; ?>" required onclick="setDateTime(this)" onkeypress="return false">
                                                 </td>
                                                 <td class="" style="vertical-align: middle;">
-                                                    <textarea class="form-control" placeholder="Enter your requirements..." name="<?php echo $row['event_id'] . '_req'; ?>" required>
+                                                    <input type="text" class="form-control" name="<?php echo $row['event_id'] . '_place'; ?>" placeholder="Event Place" required>
+                                                    <select class="form-control" placeholder="District" name="<?php echo $row['event_id'] . '_district'; ?>" id="dist" required="">
+                                                        <option disabled selected style="color: #495057;">Event District
+                                                        </option>
+                                                        <option value="Kasargod">Kasargod</option>
+                                                        <option value="Kannur">Kannur</option>
+                                                        <option value="Waynad">Wayanad</option>
+                                                        <option value="Kozhikode">Kozhikode</option>
+                                                        <option value="Malappuram">Malappuram</option>
+                                                        <option value="Palakkad">Palakkad</option>
+                                                        <option value="Thrissur">Thrissur</option>
+                                                        <option value="Ernakulam">Ernakulam</option>
+                                                        <option value="Idukki">Idukki</option>
+                                                        <option value="Kottayam">Kottayam</option>
+                                                        <option value="Alappuzha">Alappuzha</option>
+                                                        <option value="Pathanamthitta">Pathanamthitta</option>
+                                                        <option value="Kollam">Kollam</option>
+                                                        <option value="Thiruvananthapuram">Thiruvananthapuram</option>
 
-                                        </textarea>
+                                                    </select>
+                                                    <input type="text" class="form-control" name="<?php echo $row['event_id'] . '_pincode'; ?>" placeholder="Event Pincode" required>
                                                 </td>
-                                                <td class="">
+                                                <td class="" style="vertical-align: middle;">
+                                                    <textarea class="form-control" placeholder="Enter your requirements..." name="<?php echo $row['event_id'] . '_req'; ?>" required></textarea>
+                                                </td>
+                                                <td class="" style="vertical-align: middle;">
                                                     <div style="display: flex;align-items: center;justify-content: center;">
                                                         <button type="button" class="btn btn-danger btn-sm" onclick="remove(<?php echo $row['cart_id']; ?>)">
                                                             <span class="glyphicon glyphicon-remove"></span> Remove
@@ -121,6 +145,7 @@ require('header.php');
                                                 </td>
                                             </tr>
                                         <?php
+                                            $n++;
                                         }
 
                                         ?>
@@ -130,10 +155,13 @@ require('header.php');
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                            <td>
-                                                <button type="submit" class="btn btn-info">
-                                                    <span class="fa fa-shopping-cart"></span> Book Now
-                                                </button>
+                                            <td></td>
+                                            <td class="" style="vertical-align: middle;">
+                                                <div style="display: flex;align-items: center;justify-content: center;">
+                                                    <button type="submit" class="btn btn-info" name="cart">
+                                                        <span class="fa fa-shopping-cart"></span> Book Now
+                                                    </button>
+                                                </div>
                                             </td>
 
                                         </tr>
@@ -168,63 +196,9 @@ require('footer.php');
 ?>
 
 <script>
-    function minus(id) {
-        var now = $("#quantity" + id).val();
-        if (now > 1) {
-            $.ajax({
-                url: "php/addcart.php",
-                type: "post",
-                data: {
-                    minus: "check",
-                    id: id
-
-                },
-                // beforeSend: function() {
-                //     Swal.fire({
-                //         allowOutsideClick: false,
-                //         allowEscapeKey: false,
-                //     });
-                //     Swal.showLoading();
-                // },
-                success: function(res) {
-                    // Swal.close();
-                    window.location.reload(true);
-
-                }
-            });
-        }
-    }
-
-    function plus(id, max) {
-        var now = $("#quantity" + id).val();
-        if (now != max) {
-            $.ajax({
-                url: "php/addcart.php",
-                type: "post",
-                data: {
-                    plus: "check",
-                    id: id
-
-                },
-                // beforeSend: function() {
-                //     Swal.fire({
-                //         allowOutsideClick: false,
-                //         allowEscapeKey: false,
-                //     });
-                //     Swal.showLoading();
-                // },
-                success: function(res) {
-                    // Swal.close();
-                    window.location.reload(true);
-
-                }
-            });
-        }
-    }
-
     function remove(id) {
         $.ajax({
-            url: "php/removewish.php",
+            url: "php/cart.php",
             type: "post",
             data: {
                 remove: "check",
@@ -246,17 +220,17 @@ require('footer.php');
         });
     }
 
-    function setDate(input) {
+    function setDateTime(input) {
         const today = new Date();
-        const minDate = new Date(today);
-        minDate.setDate(minDate.getDate() + 3);
+        const minDateTime = new Date(today);
+        minDateTime.setDate(minDateTime.getDate() + 3);
 
-        if (minDate.getMonth() !== today.getMonth()) {
-            minDate.setDate(1);
-            minDate.setMonth(minDate.getMonth() + 1);
+        if (minDateTime.getMonth() !== today.getMonth()) {
+            minDateTime.setDate(1);
+            minDateTime.setMonth(minDateTime.getMonth() + 1);
         }
 
-        const minDateString = minDate.toISOString().split('T')[0];
-        input.min = minDateString;
+        const minDateTimeString = minDateTime.toISOString().slice(0, 16);
+        input.min = minDateTimeString;
     }
 </script>

@@ -52,7 +52,7 @@ $id = $_GET['id'];
                                 <!-- col-lg-6 start here -->
                                 <div class="invoice-from">
                                     <ul class="list-unstyled text-right">
-                                        <li>AutoDoc</li>
+                                        <li>CrystalEvents</li>
                                         <li>2500 Ridgepoint Dr, Suite 105-C</li>
                                         <li>Austin TX 78754</li>
                                         <li>VAT Number EU826113958</li>

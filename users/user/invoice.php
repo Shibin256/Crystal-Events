@@ -19,16 +19,16 @@ $id = $_GET['id'];
     </script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <style>
-    body {
-        margin-top: 10px;
-        background: #eee;
-    }
-
-    @media print {
-        #print {
-            display: none;
+        body {
+            margin-top: 10px;
+            background: #eee;
         }
-    }
+
+        @media print {
+            #print {
+                display: none;
+            }
+        }
     </style>
 </head>
 
@@ -44,8 +44,7 @@ $id = $_GET['id'];
                             <!-- Start .row -->
                             <div class="col-lg-6">
                                 <!-- col-lg-6 start here -->
-                                <div class="invoice-logo"><img width="100"
-                                        src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Invoice logo">
+                                <div class="invoice-logo"><img width="100" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Invoice logo">
                                 </div>
                             </div>
                             <!-- col-lg-6 end here -->
@@ -53,7 +52,7 @@ $id = $_GET['id'];
                                 <!-- col-lg-6 start here -->
                                 <div class="invoice-from">
                                     <ul class="list-unstyled text-right">
-                                        <li>AutoDoc</li>
+                                        <li>CrystalEvents</li>
                                         <li>2500 Ridgepoint Dr, Suite 105-C</li>
                                         <li>Austin TX 78754</li>
                                         <li>VAT Number EU826113958</li>
@@ -117,8 +116,7 @@ $id = $_GET['id'];
                                                 ?>
                                                 <tr>
                                                     <td>1</td>
-                                                    <td> <a
-                                                            href="view.php?id=<?php echo $row['bike_id']; ?>"><?php echo $row['name']; ?></a>
+                                                    <td> <a href="view.php?id=<?php echo $row['bike_id']; ?>"><?php echo $row['name']; ?></a>
                                                     </td>
                                                     <td>Booking</td>
                                                     <td class="text-right">₹50000</td>
@@ -126,14 +124,13 @@ $id = $_GET['id'];
                                                 <?php
                                                 if ($row['status'] == 2) {
                                                 ?>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td> <a
-                                                            href="view.php?id=<?php echo $row['bike_id']; ?>"><?php echo $row['name']; ?></a>
-                                                    </td>
-                                                    <td>Purchase</td>
-                                                    <td class="text-right">₹<?php echo $row['price'] - 50000; ?></td>
-                                                </tr>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td> <a href="view.php?id=<?php echo $row['bike_id']; ?>"><?php echo $row['name']; ?></a>
+                                                        </td>
+                                                        <td>Purchase</td>
+                                                        <td class="text-right">₹<?php echo $row['price'] - 50000; ?></td>
+                                                    </tr>
                                                 <?php
                                                 }
                                                 ?>
@@ -146,11 +143,11 @@ $id = $_GET['id'];
                                                         <?php
                                                         if ($row['status'] == 2) {
                                                         ?>
-                                                        <?php echo $row['price']; ?>
+                                                            <?php echo $row['price']; ?>
                                                         <?php
                                                         } else {
                                                         ?>
-                                                        50000<?php
+                                                            50000<?php
                                                                 }
                                                                     ?>
                                                     </th>
@@ -160,9 +157,7 @@ $id = $_GET['id'];
                                     </div>
                                 </div>
                                 <div class="invoice-footer mt25">
-                                    <p class="text-center">Generated on <?php echo date("l, F jS, Y ") ?><a id="print"
-                                            href="javascript:;" onclick="window.print();"
-                                            class="btn btn-default ml15"><i class="fa fa-print mr5"></i> Print</a></p>
+                                    <p class="text-center">Generated on <?php echo date("l, F jS, Y ") ?><a id="print" href="javascript:;" onclick="window.print();" class="btn btn-default ml15"><i class="fa fa-print mr5"></i> Print</a></p>
                                 </div>
                             </div>
                             <!-- col-lg-12 end here -->

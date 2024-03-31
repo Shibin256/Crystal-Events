@@ -7,7 +7,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <?php
 session_start();
 if (!isset($_SESSION['email'])) {
-    echo "<script>window.location.replace('../../index.html')</script>";
+    echo "<script>window.location.replace('../../index.php')</script>";
 }
 $email = $_SESSION['email'];
 require('../../php/connect.php');

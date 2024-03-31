@@ -10,35 +10,26 @@
     <?php
     session_start();
     require('../../../php/connect.php');
-    if (isset($_POST['id'])) {
+    if (isset($_POST['success'])) {
         $email = $_SESSION['email'];
-        $id = $_POST['id'];
+        $amt = $_POST['amt'];
+        $response = $_POST['response'];
         $date = date('Y-m-d H:i:s');
+        $id = $_POST['book_id'];
 
 
-        $sql = "insert into payment (amount,paid_date) values ('50000','$date')";
+        $sql = "insert into payment (amount,paid_date,ref_id) values ('$amt','$date','$response')";
         insert($sql);
+        echo $sql;
 
         $pay_id = mysqli_insert_id($conn);
 
 
-        $bike_id = $id;
-        $sql2 = "insert into pro_order (email_id,bike_id,order_date,payment_id) values ('$email','$bike_id','$date','$pay_id')";
+        $sql2 = "update bookings set pay_id1='$pay_id' where book_id='$id'";
         insert($sql2);
 
-        $o_id = mysqli_insert_id($conn);
-
-        $sql3 = "update bike set stock = stock - 1 where bike_id='$bike_id'";
-        update($sql3);
-
-
-        $title = "Payment Success";
-        $template = file_get_contents('../../mail-templates/payment.html');
-        $template = str_replace('{{amt}}', '50000', $template);
-        $template = str_replace('{{id}}', $o_id, $template);
-        send_mail($email, $title, $template);
-
         $_SESSION['menu'] = "book";
+        exit();
     } else {
     ?>
         <script>
@@ -46,7 +37,7 @@
                 icon: 'error',
                 title: 'Error!',
             }).then((result) => {
-                window.location.replace('../index.php');
+                window.location.replace('../book_approved.php');
             })
         </script>
     <?php

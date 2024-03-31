@@ -128,7 +128,7 @@ $row = mysqli_fetch_assoc($res);
                                             <input type="text" name="housename" class="form-control" pattern="[A-Za-z0-9 ]+" title="Only letters,digits and spaces are allowed" placeholder="house name" required value="<?php echo $row['housename']; ?>">
                                         </div>
                                         <div class="form-group">
-                                            <label for="">Street Name</label>
+                                            <label for="">Place</label>
                                             <input type="text" name="place" class="form-control" pattern="[A-Za-z ]+" title="Only letters and spaces are allowed" placeholder="street name" required value="<?php echo $row['place']; ?>">
                                         </div>
                                         <div class="form-group">

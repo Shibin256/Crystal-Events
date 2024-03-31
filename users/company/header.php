@@ -7,7 +7,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <?php
 session_start();
 if (!isset($_SESSION['email'])) {
-    echo "<script>window.location.replace('../../index.html')</script>";
+    echo "<script>window.location.replace('../../index.php')</script>";
 }
 $email = $_SESSION['email'];
 require('../../php/connect.php');
@@ -25,7 +25,7 @@ $row = mysqli_fetch_assoc($res);
 <!DOCTYPE html>
 
 <head>
-    <title>AutoDoc
+    <title>CrystalEvents
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -163,6 +163,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             </a>
                         </li>
                     </ul>
+                </li>
+                <li>
+                    <a href="gallery.php">
+                        <i class="fa fa-cogs" aria-hidden="true"></i> <span class="nav-text">
+                            Gallery
+                        </span>
+                    </a>
                 </li>
                 <li>
                     <a href="complaints.php">
