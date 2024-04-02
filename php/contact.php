@@ -9,29 +9,30 @@
 <body>
     <?php
     session_start();
-    require('../../../php/connect.php');
-    if (isset($_POST['update'])) {
-        $bike_id = $_POST['bike_id'];
-        $stock = $_POST['stock'];
+    require('connect.php');
+    if (isset($_POST['add'])) {
+        $name = $_POST['name'];
+        $email = $_POST['email'];
+        $message = $_POST['message'];
+
+        $sql = "insert into contact (name,email,message) values ('$name','$email','$message')";
+        insert($sql);
 
 
-        $sql = "UPDATE `bike` SET `stock`='$stock' where bike_id='$bike_id'";
-
-        update($sql);
     ?>
         <script>
             Swal.fire({
                 icon: 'success',
-                title: 'Updated successfully!',
+                title: 'Message Sent',
             }).then((result) => {
-                window.location.replace('../viewbikes.php');
+                window.location.replace('../index.php');
             })
         </script>
+
 
     <?php
 
     }
-
     ?>
 </body>
 

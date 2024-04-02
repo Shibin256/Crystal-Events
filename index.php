@@ -15,9 +15,7 @@ require('php/connect.php');
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap" rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
@@ -38,8 +36,7 @@ require('php/connect.php');
 <body>
 
     <!-- Spinner Start -->
-    <div id="spinner"
-        class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+    <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
         <div class="spinner-grow text-primary" role="status"></div>
     </div>
 
@@ -51,26 +48,21 @@ require('php/connect.php');
         <div class="container topbar bg-primary d-none d-lg-block">
             <div class="d-flex justify-content-between">
                 <div class="top-info ps-2">
-                    <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#"
-                            class="text-white">Kochi, Kerala</a></small>
+                    <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Kochi, Kerala</a></small>
 
                 </div>
                 <div class="top-link pe-2">
                     <a href="login.html" class="position-relative me-4 my-auto">
 
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#fff"
-                            class="bi bi-bag-heart-fill" viewBox="0 0 512 512">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#fff" class="bi bi-bag-heart-fill" viewBox="0 0 512 512">
 
-                            <path
-                                d="M217.9 105.9L340.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L217.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1L32 320c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM352 416l64 0c17.7 0 32-14.3 32-32l0-256c0-17.7-14.3-32-32-32l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l64 0c53 0 96 43 96 96l0 256c0 53-43 96-96 96l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32z" />
+                            <path d="M217.9 105.9L340.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L217.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1L32 320c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM352 416l64 0c17.7 0 32-14.3 32-32l0-256c0-17.7-14.3-32-32-32l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l64 0c53 0 96 43 96 96l0 256c0 53-43 96-96 96l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32z" />
                         </svg>
                     </a>
                     <a href="signup.html" class="position-relative me-4 my-auto">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#fff"
-                            class="bi bi-bag-heart-fill" viewBox="0 0 640 512">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#fff" class="bi bi-bag-heart-fill" viewBox="0 0 640 512">
 
-                            <path
-                                d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM504 312V248H440c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V136c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H552v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" />
+                            <path d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM504 312V248H440c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V136c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H552v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" />
                         </svg>
                     </a>
                 </div>
@@ -83,25 +75,21 @@ require('php/connect.php');
                         <img src="img/logo.png" style="width: 80px;">Crystal Events
                     </h1>
                 </a>
-                <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarCollapse">
+                <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span class="fa fa-bars text-primary"></span>
                 </button>
                 <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                     <div class="navbar-nav mx-auto">
                         <a href="index.php" class="nav-item nav-link active">Home</a>
-                        <a href="About.html" class="nav-item nav-link">About</a>
+                        <a href="about.html" class="nav-item nav-link">About</a>
                         <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><svg
-                                    xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
-                                    class="bi bi-filter-left" viewBox="0 0 16 16">
-                                    <path
-                                        d="M2 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m0-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5" />
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-filter-left" viewBox="0 0 16 16">
+                                    <path d="M2 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m0-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5" />
                                 </svg>Filter</a>
                             <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                <a href="#top-rated" class="dropdown-item">Top Rated</a>
-                                <a href="#Slider-session" class="dropdown-item">Companies</a>
                                 <a href="#eventcompanies-session" class="dropdown-item">Verified</a>
+                                <a href="#Slider-session" class="dropdown-item">Companies</a>
+                                <a href="#top-rated" class="dropdown-item">Top Rated</a>
                             </div>
                         </div>
                         <a href="contact.html" class="nav-item nav-link">Contact</a>
@@ -213,39 +201,41 @@ require('php/connect.php');
 
                                     while ($row = mysqli_fetch_assoc($res)) {
                                     ?>
-                                    <div class="col-md-6 col-lg-4 col-xl-3">
-                                        <div class="rounded position-relative Eventcompanies-item"
-                                            style="width: 260px; height: 475.5px;">
-                                            <div class="Eventcompanies-img">
-                                                <img src="<?php echo "users/company/uploads/profile/" . $row['profile_pic']; ?>"
-                                                    class="img-fluid  rounded-top" alt=""
-                                                    style="height: 173.33px;width: 100%;">
-                                            </div>
-                                            <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                                                style="top: 10px; left: 10px;">Verified</div>
-                                            <div class="p-4 border border-secondary border-top-0 rounded-bottom"
-                                                style="width: 260px; height: 300px;">
-                                                <h5><?php echo $row['name']; ?></h5>
-
-                                                <small class="me-1"><i
-                                                        class="fas fa-map-marker-alt me-2 text-secondary"></i> <a
-                                                        href="#"
-                                                        class="currentColor"><?php echo $row['place'] . ", " . $row['district']; ?></a></small>
-
-                                                <div class="d-flex my-3 px-2">
-                                                    <i class="text-white bg-success px-2 py-1 rounded "
-                                                        style="top: 10px; left: 10px; font-style: normal; font-size: 14px;"><?php echo round($row['avg_stars'],2);?></i>
-                                                    <div class="py-1 px-1">
-                                                        <i class="fas fa-star text-primary"></i>
-                                                        <i class="fas fa-star text-primary"></i>
-                                                        <i class="fas fa-star text-primary"></i>
-                                                        <i class="fas fa-star text-primary"></i>
-                                                        <i class="fas fa-star"></i>
-                                                    </div>
+                                        <div class="col-md-6 col-lg-4 col-xl-3">
+                                            <div class="rounded position-relative Eventcompanies-item" style="width: 260px; height: 375.5px;">
+                                                <div class="Eventcompanies-img">
+                                                    <img src="<?php echo "users/company/uploads/profile/" . $row['profile_pic']; ?>" class="img-fluid  rounded-top" alt="" style="height: 173.33px;width: 100%;">
                                                 </div>
-                                                <!-- <p style="font-size: 14px;"> Wedding, birthday, Function</p> -->
-                                                <div class="d-flex justify-content-between flex-lg-wrap py-5">
-                                                    <!-- <a href="#"
+                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Verified</div>
+                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom" style="width: 260px; height: 200px;">
+                                                    <h5><?php echo $row['name']; ?></h5>
+
+                                                    <small class="me-1"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="currentColor"><?php echo $row['place'] . ", " . $row['district']; ?></a></small>
+
+                                                    <div class="d-flex my-3 px-2">
+                                                        <i class="text-white bg-success px-2 py-1 rounded " style="top: 10px; left: 10px; font-style: normal; font-size: 14px;"><?php echo round($row['avg_stars'], 2); ?></i>
+                                                        <div class="py-1 px-1">
+                                                            <?php
+                                                            $avg_stars = $row['avg_stars'];
+                                                            $filled_stars = intval($avg_stars);
+                                                            $half_star = $avg_stars - $filled_stars >= 0.5;
+
+                                                            for ($i = 0; $i < $filled_stars; $i++) {
+                                                                echo '<i class="fas fa-star text-primary"></i>';
+                                                            }
+                                                            if ($half_star) {
+                                                                echo '<i class="fas fa-star-half-alt text-primary"></i>';
+                                                                $filled_stars++;
+                                                            }
+                                                            for ($i = $filled_stars; $i < 5; $i++) {
+                                                                echo '<i class="fas fa-star"></i>';
+                                                            }
+                                                            ?>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <p style="font-size: 14px;"> Wedding, birthday, Function</p> -->
+                                                    <div class="d-flex justify-content-between flex-lg-wrap py-5">
+                                                        <!-- <a href="#"
                                                         class="btn border border-secondary rounded-pill px-3 text-primary">Book
                                                         Know</a>
                                                     <a href="#"
@@ -257,10 +247,10 @@ require('php/connect.php');
                                                             <path
                                                                 d="M225.8 468.2l-2.5-2.3L48.1 303.2C17.4 274.7 0 234.7 0 192.8v-3.3c0-70.4 50-130.8 119.2-144C158.6 37.9 198.9 47 231 69.6c9 6.4 17.4 13.8 25 22.3c4.2-4.8 8.7-9.2 13.5-13.3c3.7-3.2 7.5-6.2 11.5-9c0 0 0 0 0 0C313.1 47 353.4 37.9 392.8 45.4C462 58.6 512 119.1 512 189.5v3.3c0 41.9-17.4 81.9-48.1 110.4L288.7 465.9l-2.5 2.3c-8.2 7.6-19 11.9-30.2 11.9s-22-4.2-30.2-11.9zM239.1 145c-.4-.3-.7-.7-1-1.1l-17.8-20c0 0-.1-.1-.1-.1c0 0 0 0 0 0c-23.1-25.9-58-37.7-92-31.2C81.6 101.5 48 142.1 48 189.5v3.3c0 28.5 11.9 55.8 32.8 75.2L256 430.7 431.2 268c20.9-19.4 32.8-46.7 32.8-75.2v-3.3c0-47.3-33.6-88-80.1-96.9c-34-6.5-69 5.4-92 31.2c0 0 0 0-.1 .1s0 0-.1 .1l-17.8 20c-.3 .4-.7 .7-1 1.1c-4.5 4.5-10.6 7-16.9 7s-12.4-2.5-16.9-7z" />
                                                         </svg></a> -->
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
                                     <?php
                                     }
@@ -657,45 +647,67 @@ require('php/connect.php');
             <h1 class="mb-0">ENJOY EVERY MOMENTS WITH CREATION</h1>
             <div class="owl-carousel Slidercompanies-carousel justify-content-center">
                 <?php
-                $sql = "select * from company order by rand() limit 8";
+                $sql = "select
+                        c.*,
+                        coalesce(sum(r.star), 0) as total_stars,
+                        coalesce(avg(r.star), 0) as avg_stars
+                        from
+                            company c
+                        left join
+                            events e on c.email = e.company_email
+                        left join
+                            bookings b on e.event_id = b.event_id
+                        left join
+                            review r on b.book_id = r.book_id
+                        group by
+                            c.email, c.name
+                        order by rand() 
+                        limit 8";
                 $res = sel($sql);
 
                 while ($row = mysqli_fetch_assoc($res)) {
                 ?>
-                <div class="border border-primary rounded position-relative Slidercompanies-item"
-                    style="width: 260px; height: 475px;">
-                    <div class="Slidercompanies-img">
-                        <img src="<?php echo "users/company/uploads/profile/" . $row['profile_pic'] ?>"
-                            class="img-fluid w-100 rounded-top" alt="" style="height: 173.33px;width: 100%;">
-                    </div>
-                    <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                        style="top: 10px; left: 10px;">Verified</div>
-                    <div class="p-4 rounded-bottom">
-                        <h4><?php echo $row['name'] ?></h4>
-                        <small class="me-1"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#"
-                                class="currentColor"><?php echo $row['place'] . ", " . $row['district'] ?></a></small>
-                        <div class="d-flex my-3 px-2">
-                            <i class="text-white bg-success px-2 py-1 rounded "
-                                style="top: 10px; left: 10px; font-style: normal; font-size: 14px;">3.7</i>
-                            <div class="py-1 px-1"><i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
+                    <div class="border border-primary rounded position-relative Slidercompanies-item" style="width: 260px; height: 375px;">
+                        <div class="Slidercompanies-img">
+                            <img src="<?php echo "users/company/uploads/profile/" . $row['profile_pic'] ?>" class="img-fluid w-100 rounded-top" alt="" style="height: 173.33px;width: 100%;">
                         </div>
-                        <!-- <p> Wedding, birthday, Function</p> -->
-                        <div class="d-flex justify-content-between flex-lg-wrap">
-                            <!-- <a href="TrisolEvents.html" class="btn border border-secondary rounded-pill px-3 text-primary">Book Know</a>
+                        <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Verified</div>
+                        <div class="p-4 rounded-bottom">
+                            <h4><?php echo $row['name'] ?></h4>
+                            <small class="me-1"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="currentColor"><?php echo $row['place'] . ", " . $row['district'] ?></a></small>
+                            <div class="d-flex my-3 px-2">
+                                <i class="text-white bg-success px-2 py-1 rounded " style="top: 10px; left: 10px; font-style: normal; font-size: 14px;"><?php echo round($row['avg_stars'], 2); ?></i>
+                                <div class="py-1 px-1">
+                                    <?php
+                                    $avg_stars = $row['avg_stars'];
+                                    $filled_stars = intval($avg_stars);
+                                    $half_star = $avg_stars - $filled_stars >= 0.5;
+
+                                    for ($i = 0; $i < $filled_stars; $i++) {
+                                        echo '<i class="fas fa-star text-primary"></i>';
+                                    }
+                                    if ($half_star) {
+                                        echo '<i class="fas fa-star-half-alt text-primary"></i>';
+                                        $filled_stars++;
+                                    }
+                                    for ($i = $filled_stars; $i < 5; $i++) {
+                                        echo '<i class="fas fa-star"></i>';
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                            <!-- <p> Wedding, birthday, Function</p> -->
+                            <div class="d-flex justify-content-between flex-lg-wrap">
+                                <!-- <a href="TrisolEvents.html" class="btn border border-secondary rounded-pill px-3 text-primary">Book Know</a>
                                 <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentcolor" class="bi bi-bag-heart-fill" viewBox="0 0 512 512">
 
                                         <path d="M225.8 468.2l-2.5-2.3L48.1 303.2C17.4 274.7 0 234.7 0 192.8v-3.3c0-70.4 50-130.8 119.2-144C158.6 37.9 198.9 47 231 69.6c9 6.4 17.4 13.8 25 22.3c4.2-4.8 8.7-9.2 13.5-13.3c3.7-3.2 7.5-6.2 11.5-9c0 0 0 0 0 0C313.1 47 353.4 37.9 392.8 45.4C462 58.6 512 119.1 512 189.5v3.3c0 41.9-17.4 81.9-48.1 110.4L288.7 465.9l-2.5 2.3c-8.2 7.6-19 11.9-30.2 11.9s-22-4.2-30.2-11.9zM239.1 145c-.4-.3-.7-.7-1-1.1l-17.8-20c0 0-.1-.1-.1-.1c0 0 0 0 0 0c-23.1-25.9-58-37.7-92-31.2C81.6 101.5 48 142.1 48 189.5v3.3c0 28.5 11.9 55.8 32.8 75.2L256 430.7 431.2 268c20.9-19.4 32.8-46.7 32.8-75.2v-3.3c0-47.3-33.6-88-80.1-96.9c-34-6.5-69 5.4-92 31.2c0 0 0 0-.1 .1s0 0-.1 .1l-17.8 20c-.3 .4-.7 .7-1 1.1c-4.5 4.5-10.6 7-16.9 7s-12.4-2.5-16.9-7z" />
                                     </svg>
                                 </a> -->
+                            </div>
                         </div>
                     </div>
-                </div>
 
                 <?php
                 }
@@ -716,15 +728,13 @@ require('php/connect.php');
                         <p class="fw-normal display-3 text-dark mb-4">in Our page</p>
                         <p class="mb-4 text-dark">The generated Lorem Ipsum is therefore always free from repetition
                             injected humour, or non-characteristic words etc.</p>
-                        <a href="#"
-                            class="banner-btn btn border-2 border-white rounded-pill text-dark py-3 px-5">BUY</a>
+                        <a href="#" class="banner-btn btn border-2 border-white rounded-pill text-dark py-3 px-5">BUY</a>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="position-relative">
                         <img src="img/" class="img-fluid w-100 rounded" alt="">
-                        <div class="d-flex align-items-center justify-content-center bg-white rounded-circle position-absolute"
-                            style="width: 140px; height: 140px; top: 0; left: 0;">
+                        <div class="d-flex align-items-center justify-content-center bg-white rounded-circle position-absolute" style="width: 140px; height: 140px; top: 0; left: 0;">
                             <h1 style="font-size: 100px;">1</h1>
                             <div class="d-flex flex-column">
                                 <span class="h2 mb-0">50$</span>
@@ -747,177 +757,67 @@ require('php/connect.php');
                 <p>.</p>
             </div>
             <div class="row g-4">
+                <?php
+                $sql = "select
+                        c.*,
+                        coalesce(sum(r.star), 0) as total_stars,
+                        coalesce(avg(r.star), 0) as avg_stars
+                        from
+                            company c
+                        left join
+                            events e on c.email = e.company_email
+                        left join
+                            bookings b on e.event_id = b.event_id
+                        left join
+                            review r on b.book_id = r.book_id
+                        group by
+                            c.email, c.name
+                        order by avg_stars desc 
+                        limit 6";
+                $res = sel($sql);
 
-                <div class="col-lg-6 col-xl-4">
-                    <div class="p-4 rounded bg-light" style="width: 360px; height: 260px;">
-                        <div class="row align-items-center">
-                            <div class="col-6">
-                                <img src="event img/trisol events/logo.jpg" class="img-fluid rounded-circle w-100"
-                                    alt="">
-                            </div>
-                            <div class="col-6">
-                                <a href="#" class="h5">Trisol Events</a>
-                                <div class="d-flex my-3">
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star"></i>
+                while ($row = mysqli_fetch_assoc($res)) {
+                ?>
+                    <div class="col-lg-6 col-xl-4">
+                        <div class="p-4 rounded bg-light" style="width: 360px; height: 260px;">
+                            <div class="row align-items-center">
+                                <div class="col-6">
+                                    <img src="<?php echo 'users/company/uploads/profile/' . $row['profile_pic']; ?>" class="img-fluid rounded-circle" style="width: 150px;height: 150px;" alt="">
                                 </div>
-                                <small class="me-5"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a
-                                        href="#" class="currentColor">Kadavanthara, Kochi</a></small>
-                                <p> Wedding, birthday, Function</p>
-                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                    <a href="TrisolEvents.html"
-                                        class="btn border border-secondary rounded-pill px-3 text-primary">Book Know</a>
+                                <div class="col-6">
+                                    <a href="#" class="h5"><?php echo $row['name']; ?></a>
+                                    <div class="d-flex my-3">
+                                        <?php
+                                        $avg_stars = $row['avg_stars'];
+                                        $filled_stars = intval($avg_stars);
+                                        $half_star = $avg_stars - $filled_stars >= 0.5;
+
+                                        for ($i = 0; $i < $filled_stars; $i++) {
+                                            echo '<i class="fas fa-star text-primary"></i>';
+                                        }
+                                        if ($half_star) {
+                                            echo '<i class="fas fa-star-half-alt text-primary"></i>';
+                                            $filled_stars++;
+                                        }
+                                        for ($i = $filled_stars; $i < 5; $i++) {
+                                            echo '<i class="fas fa-star"></i>';
+                                        }
+                                        ?>
+                                    </div>
+                                    <small class="me-5"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="currentColor"><?php echo $row['place'] . ', ' . $row['district']; ?></a></small>
+                                    <!-- <p> Wedding, birthday, Function</p> -->
+                                    <div class="d-flex justify-content-between flex-lg-wrap">
+                                        <!-- <a href="TrisolEvents.html" class="btn border border-secondary rounded-pill px-3 text-primary">Book Know</a> -->
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-lg-6 col-xl-4">
-                    <div class="p-4 rounded bg-light" style="width: 360px; height: 260px;">
-                        <div class="row align-items-center">
-                            <div class="col-6">
-                                <img src="event img/giaan media/logo.jpg" class="img-fluid rounded-circle w-100" alt="">
-                            </div>
-                            <div class="col-6">
-                                <a href="#" class="h5">Giaan Medias</a>
-                                <div class="d-flex my-3">
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <small class="me-5"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a
-                                        href="#" class="currentColor">Thammanam, Ernakulam</a></small>
-                                <p> Wedding, birthday, Corporate</p>
-                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                    <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary">Book
-                                        Know</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <?php
 
-
-                <div class="col-lg-6 col-xl-4">
-                    <div class="p-4 rounded bg-light" style="width: 360px; height: 260px;">
-                        <div class="row align-items-center">
-                            <div class="col-6">
-                                <img src="event img/oakstreet events/logo.jpg" class="img-fluid rounded-circle w-100"
-                                    alt="">
-                            </div>
-                            <div class="col-6">
-                                <a href="#" class="h5">MagnoliaEvents</a>
-                                <div class="d-flex my-3">
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <small class="me-5"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a
-                                        href="#" class="currentColor">Vennala, Ernakulam</a></small>
-                                <p> Wedding, artist event, private</p>
-                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                    <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary">Book
-                                        Know</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="col-lg-6 col-xl-4">
-                    <div class="p-4 rounded bg-light" style="width: 360px; height: 260px;">
-                        <div class="row align-items-center">
-                            <div class="col-6">
-                                <img src="event img/cevex events/logo.jpg" class="img-fluid rounded-circle w-100"
-                                    alt="">
-                            </div>
-                            <div class="col-6">
-                                <a href="#" class="h5">Fonix Events</a>
-                                <div class="d-flex my-3">
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <small class="me-5"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a
-                                        href="#" class="currentColor">Kacheripady, Kochi</a></small>
-                                <p> Wedding, Corporative events</p>
-                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                    <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary">Book
-                                        Know</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="col-lg-6 col-xl-4">
-                    <div class="p-4 rounded bg-light" style="width: 360px; height: 260px;">
-                        <div class="row align-items-center">
-                            <div class="col-6">
-                                <img src="event img/hooray events/logo.jpg" class="img-fluid rounded-circle w-100"
-                                    alt="">
-                            </div>
-                            <div class="col-6">
-                                <a href="#" class="h5">Hooray Events</a>
-                                <div class="d-flex my-3">
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <small class="me-5"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a
-                                        href="#" class="currentColor">Panampilly Nagar, Kochi</a></small>
-                                <p> event Management</p>
-                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                    <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary">Book
-                                        Know</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="col-lg-6 col-xl-4">
-                    <div class="p-4 rounded bg-light" style="width: 360px; height: 260px;">
-                        <div class="row align-items-center">
-                            <div class="col-6">
-                                <img src="event img/eventos magic/logo.JPG" class="img-fluid rounded-circle w-100"
-                                    alt="">
-                            </div>
-                            <div class="col-6">
-                                <a href="#" class="h5">Eventos magic</a>
-                                <div class="d-flex my-3">
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <small class="me-5"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a
-                                        href="#" class="currentColor">**********, Kochi</a></small>
-                                <p> Wedding, Birthday, Functions</p>
-                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                    <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary">Book
-                                        Know</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                }
+                ?>
 
             </div>
         </div>
@@ -938,28 +838,19 @@ require('php/connect.php');
                     </div>
                     <div class="col-lg-6">
                         <div class="position-relative mx-auto">
-                            <input class="form-control border-0 w-100 py-3 px-4 rounded-pill" type="email"
-                                placeholder="Your Email">
-                            <button type="submit"
-                                class="btn btn-primary border-0 border-secondary py-3 px-4 position-absolute rounded-pill text-white"
-                                style="top: 0; right: 0;">Subscribe Now</button>
+                            <input class="form-control border-0 w-100 py-3 px-4 rounded-pill" type="email" placeholder="Your Email">
+                            <button type="submit" class="btn btn-primary border-0 border-secondary py-3 px-4 position-absolute rounded-pill text-white" style="top: 0; right: 0;">Subscribe Now</button>
                         </div>
                     </div>
                     <div class="col-lg-3">
                         <div class="d-flex justify-content-end pt-3">
-                            <a class="btn  btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><svg
-                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentcolor"
-                                    viewBox="0 0 512 512">
+                            <a class="btn  btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentcolor" viewBox="0 0 512 512">
 
-                                    <path
-                                        d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z" />
+                                    <path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z" />
                                 </svg></a>
-                            <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i
-                                    class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i
-                                    class="fab fa-instagram"></i></a>
-                            <a class="btn btn-outline-secondary btn-md-square rounded-circle" href=""><i
-                                    class="fab fa-linkedin-in"></i></a>
+                            <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i class="fab fa-instagram"></i></a>
+                            <a class="btn btn-outline-secondary btn-md-square rounded-circle" href=""><i class="fab fa-linkedin-in"></i></a>
                         </div>
                     </div>
                 </div>
@@ -1021,8 +912,7 @@ require('php/connect.php');
                     <!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
                     <!--/*** If you'd like to use the template without the below author’s credit link/attribution link/backlink, ***/-->
                     <!--/*** you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". ***/-->
-                    Designed By <a class="border-bottom" href="https://htmlcodex.com">shibin kp</a> <a
-                        class="border-bottom" href="https://themewagon.com"></a>
+                    Designed By <a class="border-bottom" href="https://htmlcodex.com">shibin kp</a> <a class="border-bottom" href="https://themewagon.com"></a>
                 </div>
             </div>
         </div>
@@ -1032,8 +922,7 @@ require('php/connect.php');
 
 
     <!-- Back to Top -->
-    <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
-            class="fa fa-arrow-up"></i></a>
+    <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
 
 
     <!-- JavaScript Libraries -->
