@@ -2,7 +2,7 @@
 session_start();
 require_once __DIR__ . '/../../../php/connect.php';
 
-if (!isset($_SESSION['email']) || !isset($_SESSION['usertype']) || $_SESSION['usertype'] !== 2) {
+if (!isset($_SESSION['email']) || !isset($_SESSION['usertype']) || (int)$_SESSION['usertype'] !== 3) {
     header("Location: ../../../login.html");
     exit;
 }
