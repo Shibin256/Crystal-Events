@@ -20,7 +20,7 @@ $lRow = $res ? mysqli_fetch_assoc($res) : null;
 $status = $lRow ? (int)$lRow['status'] : 0;
 
 $currentPage = basename($_SERVER['PHP_SELF']);
-if ($status === 0 && !in_array($currentPage, ['profile.php', 'password.php'])) {
+if ($status === 0 && $currentPage !== 'profile.php') {
     header("Location: profile.php");
     exit;
 }

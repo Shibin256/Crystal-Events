@@ -3,50 +3,73 @@ session_start();
 require_once __DIR__ . '/connect.php';
 
 $status = "error";
-$title = "Incorrect Credentials";
+$title = "Invalid Credentials";
 $text = "";
 $redirect = "../login.html";
 
-if (isset($_POST['login'])) {
-    $email = trim($_POST["email"] ?? '');
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    $title = "Invalid Request Method";
+    $text = "Only POST requests are permitted.";
+} elseif (isset($_POST['login'])) {
+    $email = strtolower(trim($_POST["email"] ?? ''));
     $password = $_POST["password"] ?? '';
+    $ip = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
 
     if ($email === '' || $password === '') {
         $title = "Missing Fields";
         $text = "Please enter both email and password.";
     } else {
-        $res = sel("SELECT email, password, usertype, status FROM login WHERE email=?", [$email]);
-        if ($res && mysqli_num_rows($res) > 0) {
-            $row = mysqli_fetch_assoc($res);
-            $hash = $row['password'];
-            $valid = false;
+        // Brute force check: 5 failed attempts per email or IP in the last 10 minutes
+        $attemptCheck = sel("SELECT COUNT(*) as failed FROM login_attempts WHERE (ip_address=? OR email=?) AND attempt_time > (NOW() - INTERVAL 10 MINUTE)", [$ip, $email]);
+        $failCount = 0;
+        if ($attemptCheck) {
+            $row = mysqli_fetch_assoc($attemptCheck);
+            $failCount = (int)($row['failed'] ?? 0);
+        }
 
-            if (password_verify($password, $hash)) {
-                $valid = true;
-            } elseif ($password === $hash) {
-                // One-time migration from plaintext to bcrypt
-                $valid = true;
-                $newHash = password_hash($password, PASSWORD_BCRYPT);
-                update("UPDATE login SET password=? WHERE email=?", [$newHash, $email]);
+        if ($failCount >= 5) {
+            $title = "Account Locked";
+            $text = "Too many failed login attempts. Please try again after 10 minutes.";
+        } else {
+            $res = sel("SELECT email, password, usertype, status FROM login WHERE LOWER(email)=?", [$email]);
+            $loginSuccess = false;
+            $userRow = null;
+
+            if ($res && mysqli_num_rows($res) > 0) {
+                $userRow = mysqli_fetch_assoc($res);
+                $hash = $userRow['password'];
+
+                if (password_verify($password, $hash)) {
+                    $loginSuccess = true;
+                } elseif ($password === $hash) {
+                    // One-time migration from legacy plaintext password to bcrypt
+                    $loginSuccess = true;
+                    $newHash = password_hash($password, PASSWORD_BCRYPT);
+                    update("UPDATE login SET password=? WHERE email=?", [$newHash, $userRow['email']]);
+                }
             }
 
-            if ($valid) {
+            if ($loginSuccess && $userRow) {
+                // Clear failed attempts on successful login
+                delete("DELETE FROM login_attempts WHERE email=? OR ip_address=?", [$email, $ip]);
+
                 session_regenerate_id(true);
-                $_SESSION['email'] = $email;
-                $_SESSION['usertype'] = (int)$row['usertype'];
-                $_SESSION['status'] = (int)$row['status'];
+                $_SESSION['email'] = $userRow['email'];
+                $_SESSION['usertype'] = (int)$userRow['usertype'];
+                $_SESSION['status'] = (int)$userRow['status'];
                 $_SESSION['menu'] = 'dash';
+                $_SESSION['last_activity'] = time();
 
                 $status = "success";
 
                 // Admin
-                if ((int)$row['usertype'] === 1) {
+                if ((int)$userRow['usertype'] === 1) {
                     $title = "Welcome Back Admin!";
                     $redirect = "../users/admin/";
                 }
                 // User
-                elseif ((int)$row['usertype'] === 2) {
-                    if ((int)$row['status'] === 0) {
+                elseif ((int)$userRow['usertype'] === 2) {
+                    if ((int)$userRow['status'] === 0) {
                         $status = "info";
                         $title = "Account under verification!";
                         $redirect = "../users/user/profile.php";
@@ -56,8 +79,8 @@ if (isset($_POST['login'])) {
                     }
                 }
                 // Company
-                elseif ((int)$row['usertype'] === 3) {
-                    if ((int)$row['status'] === 0) {
+                elseif ((int)$userRow['usertype'] === 3) {
+                    if ((int)$userRow['status'] === 0) {
                         $status = "info";
                         $title = "Account under verification!";
                         $redirect = "../users/company/profile.php";
@@ -67,11 +90,12 @@ if (isset($_POST['login'])) {
                     }
                 }
             } else {
-                $title = "Incorrect Credentials";
+                // Record failed login attempt
+                insert("INSERT INTO login_attempts (ip_address, email, attempt_time) VALUES (?, ?, NOW())", [$ip, $email]);
+
+                $title = "Invalid Credentials";
+                $text = "Invalid email or password.";
             }
-        } else {
-            $title = "Account doesn't exist!";
-            $redirect = "../login.html";
         }
     }
 }

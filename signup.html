@@ -290,10 +290,10 @@
           <a href="index.php" class="social"><i class="fa fa-home"></i></a>
         </div>
         <!-- <span>or use your email for registration</span> -->
-        <input type="text" name="name" required placeholder="Name" />
-        <input type="email" name="email" required placeholder="Email" />
-        <input type="password" name="password" required placeholder="Password" />
-        <input type="password" name="cpassword" required placeholder="Confirm Password" />
+        <input type="text" name="name" required placeholder="Name" maxlength="255" />
+        <input type="email" name="email" required placeholder="Email" maxlength="255" />
+        <input type="password" name="password" id="company-password" required placeholder="Password" minlength="8" pattern="(?=.*[A-Za-z])(?=.*\d).{8,}" title="Password must be at least 8 characters long and contain letters and numbers" />
+        <input type="password" name="cpassword" id="company-cpassword" required placeholder="Confirm Password" minlength="8" />
         <button type="submit" name="company"> Done </button>
         <a href="login.html">Already registered? Login here</a>
       </form>
@@ -309,11 +309,11 @@
           <a href="index.php" class="social"><i class="fa fa-home"></i></a>
         </div>
         <!-- <span>or use your account</span> -->
-        <input type="text" name="firstname" required placeholder="First Name" />
-        <input type="text" name="lastname" required placeholder="Last Name" />
-        <input type="email" name="email" required placeholder="Email" />
-        <input type="password" name="password" required placeholder="Password" />
-        <input type="password" name="cpassword" required placeholder="Confirm Password" />
+        <input type="text" name="firstname" required placeholder="First Name" maxlength="100" pattern="^[a-zA-Z\s'-]+$" title="First name must contain only letters" />
+        <input type="text" name="lastname" required placeholder="Last Name" maxlength="100" pattern="^[a-zA-Z\s'-]+$" title="Last name must contain only letters" />
+        <input type="email" name="email" required placeholder="Email" maxlength="255" />
+        <input type="password" name="password" id="user-password" required placeholder="Password" minlength="8" pattern="(?=.*[A-Za-z])(?=.*\d).{8,}" title="Password must be at least 8 characters long and contain letters and numbers" />
+        <input type="password" name="cpassword" id="user-cpassword" required placeholder="Confirm Password" minlength="8" />
         <button type="submit" name="user"> Done </button>
         <a href="login.html">Already registered? Login here</a>
       </form>
@@ -348,6 +348,18 @@
     });
   </script>
 
+  <script>
+    document.querySelectorAll('form').forEach(function(f) {
+      f.addEventListener('submit', function(e) {
+        var p = f.querySelector('input[name="password"]');
+        var cp = f.querySelector('input[name="cpassword"]');
+        if (p && cp && p.value !== cp.value) {
+          e.preventDefault();
+          alert('Passwords do not match.');
+        }
+      });
+    });
+  </script>
 </body>
 
 </html>

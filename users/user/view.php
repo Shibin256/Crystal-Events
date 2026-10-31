@@ -1,9 +1,10 @@
 <?php
+require('header.php');
+
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     header("Location: companies.php");
     exit;
 }
-require('header.php');
 
 $id = trim($_GET['id']);
 $res = sel("SELECT * FROM company WHERE email=?", [$id]);

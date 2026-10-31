@@ -149,6 +149,10 @@ $row = mysqli_fetch_assoc($res);
                                             <input type="text" name="ifsc_code" class="form-control" placeholder="IFSC Code" value="<?php echo safe_html($row['ifsc_code']); ?>">
                                         </div>
                                         <div class="form-group">
+                                            <label for="">Aadhar Number (12 digits)</label>
+                                            <input type="text" name="aadhar" class="form-control" placeholder="12-digit Aadhar number" pattern="\d{12}" title="Please enter a 12-digit Aadhar number" value="<?php echo safe_html($row['aadhar'] ?? ''); ?>">
+                                        </div>
+                                        <div class="form-group">
                                             <label for="">About Company</label>
                                             <textarea rows="5" class="form-control" name="about" placeholder="Tell visitors about your company..."><?php echo safe_html($row['about']); ?></textarea>
                                         </div>

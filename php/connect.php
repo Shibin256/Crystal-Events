@@ -16,6 +16,29 @@ if (!$conn) {
 mysqli_set_charset($conn, "utf8mb4");
 date_default_timezone_set(defined('TIMEZONE') ? TIMEZONE : "Asia/Kolkata");
 
+// 30-minute idle session timeout enforcement
+if (session_status() === PHP_SESSION_ACTIVE) {
+    $now = time();
+    if (isset($_SESSION['last_activity']) && ($now - $_SESSION['last_activity'] > 1800)) {
+        $_SESSION = [];
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(
+                session_name(),
+                '',
+                time() - 42000,
+                $params["path"],
+                $params["domain"],
+                $params["secure"],
+                $params["httponly"]
+            );
+        }
+        session_destroy();
+    } elseif (isset($_SESSION['email'])) {
+        $_SESSION['last_activity'] = $now;
+    }
+}
+
 /**
  * Execute a query with optional prepared statement parameters.
  * Automatically infers types if not provided.

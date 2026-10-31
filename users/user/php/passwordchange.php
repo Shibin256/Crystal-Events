@@ -14,12 +14,19 @@ $text = "Invalid request.";
 if (isset($_POST['edit'])) {
     $cpass = $_POST['cpass'] ?? '';
     $npass = $_POST['npass'] ?? '';
+    $cnpass = $_POST['cnpass'] ?? '';
     $email = $_SESSION['email'];
 
-    if ($cpass === '' || $npass === '') {
-        $text = "Both current and new passwords are required.";
-    } elseif (strlen($npass) < 6) {
-        $text = "New password must be at least 6 characters.";
+    if ($cpass === '' || $npass === '' || $cnpass === '') {
+        $text = "All password fields are required.";
+    } elseif ($npass !== $cnpass) {
+        $text = "New password and confirmation password do not match.";
+    } elseif ($npass === $cpass) {
+        $text = "New password cannot be the same as the current password.";
+    } elseif (strlen($npass) < 8) {
+        $text = "New password must be at least 8 characters long.";
+    } elseif (!preg_match('/^(?=.*[A-Za-z])(?=.*\d)/', $npass)) {
+        $text = "New password must contain both letters and numbers.";
     } else {
         $res = sel("SELECT password FROM login WHERE email=?", [$email]);
         if ($res && mysqli_num_rows($res) > 0) {
@@ -39,6 +46,8 @@ if (isset($_POST['edit'])) {
             } else {
                 $text = "Current password is incorrect.";
             }
+        } else {
+            $text = "User account not found.";
         }
     }
 }
@@ -58,7 +67,7 @@ if (isset($_POST['edit'])) {
             title: <?php echo json_encode($title); ?>,
             text: <?php echo json_encode($text); ?>
         }).then(() => {
-            window.location.replace('../profile.php');
+            window.location.replace('../password.php');
         });
     </script>
 </body>
