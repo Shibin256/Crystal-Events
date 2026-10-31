@@ -19,8 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         $title = "Missing Fields";
         $text = "Please enter both email and password.";
     } else {
-        // Brute force check: 5 failed attempts per email or IP in the last 10 minutes
-        $attemptCheck = sel("SELECT COUNT(*) as failed FROM login_attempts WHERE (ip_address=? OR email=?) AND attempt_time > (NOW() - INTERVAL 10 MINUTE)", [$ip, $email]);
+        // Brute force check: 5 failed attempts per email/IP in the last 10 minutes
+        $attemptCheck = sel("SELECT COUNT(*) as failed FROM login_attempts WHERE email=? AND ip_address=? AND attempt_time > (NOW() - INTERVAL 10 MINUTE)", [$email, $ip]);
         $failCount = 0;
         if ($attemptCheck) {
             $row = mysqli_fetch_assoc($attemptCheck);
