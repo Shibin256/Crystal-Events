@@ -6,11 +6,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 -->
 <?php
 session_start();
-if (!isset($_SESSION['email'])) {
-    echo "<script>window.location.replace('../../index.php')</script>";
+require_once __DIR__ . '/../../php/connect.php';
+
+if (!isset($_SESSION['email']) || !isset($_SESSION['usertype']) || (int)$_SESSION['usertype'] !== 1) {
+    header("Location: ../../login.html");
+    exit;
 }
 $email = $_SESSION['email'];
-require('../../php/connect.php');
 ?>
 <!DOCTYPE html>
 

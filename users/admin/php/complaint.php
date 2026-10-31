@@ -1,48 +1,46 @@
+<?php
+session_start();
+require_once __DIR__ . '/../../../php/connect.php';
+
+if (!isset($_SESSION['email']) || !isset($_SESSION['usertype']) || (int)$_SESSION['usertype'] !== 1) {
+    header("Location: ../../../login.html");
+    exit;
+}
+
+$status = "error";
+$msg = "Invalid update.";
+
+if (isset($_POST['update'])) {
+    $complaint_id = (int)($_POST['complaint_id'] ?? 0);
+    $reply = trim($_POST['reply'] ?? '');
+
+    if ($complaint_id > 0 && $reply !== '') {
+        $res = update("UPDATE complaint SET reply=?, status=2 WHERE complaint_id=?", [$reply, $complaint_id]);
+        if ($res) {
+            $status = "success";
+            $msg = "Complaint reply saved!";
+        } else {
+            $msg = "Database error while updating complaint.";
+        }
+    }
+}
+?>
+<!DOCTYPE html>
 <html>
-
 <head>
-
+    <meta charset="utf-8">
+    <title>Reply Complaint - Crystal Events</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-
 <body>
-    <html>
-
-    <head>
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    </head>
-
-    <body>
-        <?php
-        session_start();
-        require('../../../php/connect.php');
-        if (isset($_POST['update'])) {
-            $complaint_id = $_POST['complaint_id'];
-            $reply = $_POST['reply'];
-
-
-
-
-            $sql = "update complaint set reply='$reply',status=2 where complaint_id='$complaint_id'";
-            $res = update($sql);
-        ?>
-            <script>
-                Swal.fire({
-                    icon: 'success',
-                    title: ' Success!',
-                }).then((result) => {
-                    window.location.replace('../complaints.php');
-                })
-            </script>
-
-        <?php
-
-        }
-
-        ?>
-    </body>
-
-    </html>
+    <script>
+        Swal.fire({
+            icon: <?php echo json_encode($status); ?>,
+            title: <?php echo json_encode($msg); ?>,
+        }).then(() => {
+            window.location.replace('../complaints.php');
+        });
+    </script>
+</body>
+</html>

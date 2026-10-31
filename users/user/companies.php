@@ -36,27 +36,30 @@ require('header.php');
 
 
                 <?php
-                $sql = "select * from company";
+                $sql = "select * from company order by name asc";
                 $res = sel($sql);
-                while ($row = mysqli_fetch_assoc($res)) {
+                if ($res) {
+                    while ($row = mysqli_fetch_assoc($res)) {
+                        $profilePic = !empty($row['profile_pic']) ? $row['profile_pic'] : 'default.jpg';
+                        $aboutSnippet = substr(safe_str($row['about']), 0, 300);
                 ?>
-                    <div class="col-md-3" style="margin: 0px;display: inline-block;padding: 15px;">
-                        <div class="card" style="height: 100%;">
-                            <img class="card-img" src="<?php echo '../company/uploads/profile/' . $row['profile_pic']; ?>" style="height: 200px;">
-                            <!-- <div class="card-header"></div> -->
-                            <div class="card-body">
-                                <h5 class="card-title"><?php echo $row['name']; ?></h5>
-                                <p class="card-text" style="text-align: justify;">
-                                    <?php echo  substr($row['about'], 0, 300); ?>...</p>
+                    <div class="col-md-3 col-sm-6" style="margin: 0px;display: inline-block;padding: 15px;vertical-align: top;">
+                        <div class="card" style="height: 100%; display: flex; flex-direction: column;">
+                            <img class="card-img-top" src="<?php echo '../company/uploads/profile/' . rawurlencode($profilePic); ?>" alt="<?php echo safe_html($row['name']); ?>" style="height: 200px; object-fit: cover;">
+                            <div class="card-body" style="flex: 1 1 auto;">
+                                <h5 class="card-title" style="font-weight: 600;"><?php echo safe_html($row['name']); ?></h5>
+                                <p class="card-text" style="text-align: justify; font-size: 13px; color: #666;">
+                                    <?php echo nl2br(safe_html($aboutSnippet)); ?><?php if (strlen(safe_str($row['about'])) > 300) echo '...'; ?></p>
                             </div>
-                            <div class="card-footer">
+                            <div class="card-footer" style="background: #fafafa; border-top: 1px solid #eee;">
                                 <div style="display: flex;justify-content: space-evenly">
-                                    <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='view.php?id=<?php echo urlencode($row['email']); ?>'">View</button>
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='view.php?id=<?php echo urlencode($row['email']); ?>'"><i class="fa fa-eye"></i> View Company</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 <?php
+                    }
                 }
                 ?>
 

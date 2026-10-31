@@ -204,19 +204,19 @@ require('php/connect.php');
                                         <div class="col-md-6 col-lg-4 col-xl-3">
                                             <div class="rounded position-relative Eventcompanies-item" style="width: 260px; height: 375.5px;">
                                                 <div class="Eventcompanies-img">
-                                                    <img src="<?php echo "users/company/uploads/profile/" . $row['profile_pic']; ?>" class="img-fluid  rounded-top" alt="" style="height: 173.33px;width: 100%;">
+                                                    <img src="<?php echo "users/company/uploads/profile/" . rawurlencode(!empty($row['profile_pic']) ? $row['profile_pic'] : 'default.jpg'); ?>" class="img-fluid rounded-top" alt="<?php echo safe_html($row['name']); ?>" style="height: 173.33px;width: 100%;object-fit:cover;">
                                                 </div>
                                                 <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Verified</div>
                                                 <div class="p-4 border border-secondary border-top-0 rounded-bottom" style="width: 260px; height: 200px;">
-                                                    <h5><?php echo $row['name']; ?></h5>
+                                                    <h5><?php echo safe_html($row['name']); ?></h5>
 
-                                                    <small class="me-1"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="currentColor"><?php echo $row['place'] . ", " . $row['district']; ?></a></small>
+                                                    <small class="me-1"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <span class="currentColor"><?php echo safe_html($row['place'] . ", " . $row['district']); ?></span></small>
 
                                                     <div class="d-flex my-3 px-2">
-                                                        <i class="text-white bg-success px-2 py-1 rounded " style="top: 10px; left: 10px; font-style: normal; font-size: 14px;"><?php echo round($row['avg_stars'], 2); ?></i>
+                                                        <i class="text-white bg-success px-2 py-1 rounded " style="top: 10px; left: 10px; font-style: normal; font-size: 14px;"><?php echo round((float)($row['avg_stars'] ?? 0), 1); ?></i>
                                                         <div class="py-1 px-1">
                                                             <?php
-                                                            $avg_stars = $row['avg_stars'];
+                                                            $avg_stars = (float)($row['avg_stars'] ?? 0);
                                                             $filled_stars = intval($avg_stars);
                                                             $half_star = $avg_stars - $filled_stars >= 0.5;
 
@@ -669,17 +669,17 @@ require('php/connect.php');
                 ?>
                     <div class="border border-primary rounded position-relative Slidercompanies-item" style="width: 260px; height: 375px;">
                         <div class="Slidercompanies-img">
-                            <img src="<?php echo "users/company/uploads/profile/" . $row['profile_pic'] ?>" class="img-fluid w-100 rounded-top" alt="" style="height: 173.33px;width: 100%;">
+                            <img src="<?php echo "users/company/uploads/profile/" . rawurlencode(!empty($row['profile_pic']) ? $row['profile_pic'] : 'default.jpg'); ?>" class="img-fluid w-100 rounded-top" alt="<?php echo safe_html($row['name']); ?>" style="height: 173.33px;width: 100%;object-fit:cover;">
                         </div>
                         <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Verified</div>
                         <div class="p-4 rounded-bottom">
-                            <h4><?php echo $row['name'] ?></h4>
-                            <small class="me-1"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="currentColor"><?php echo $row['place'] . ", " . $row['district'] ?></a></small>
+                            <h4><?php echo safe_html($row['name']); ?></h4>
+                            <small class="me-1"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <span class="currentColor"><?php echo safe_html($row['place'] . ", " . $row['district']); ?></span></small>
                             <div class="d-flex my-3 px-2">
-                                <i class="text-white bg-success px-2 py-1 rounded " style="top: 10px; left: 10px; font-style: normal; font-size: 14px;"><?php echo round($row['avg_stars'], 2); ?></i>
+                                <i class="text-white bg-success px-2 py-1 rounded " style="top: 10px; left: 10px; font-style: normal; font-size: 14px;"><?php echo round((float)($row['avg_stars'] ?? 0), 1); ?></i>
                                 <div class="py-1 px-1">
                                     <?php
-                                    $avg_stars = $row['avg_stars'];
+                                    $avg_stars = (float)($row['avg_stars'] ?? 0);
                                     $filled_stars = intval($avg_stars);
                                     $half_star = $avg_stars - $filled_stars >= 0.5;
 
@@ -782,13 +782,13 @@ require('php/connect.php');
                         <div class="p-4 rounded bg-light" style="width: 360px; height: 260px;">
                             <div class="row align-items-center">
                                 <div class="col-6">
-                                    <img src="<?php echo 'users/company/uploads/profile/' . $row['profile_pic']; ?>" class="img-fluid rounded-circle" style="width: 150px;height: 150px;" alt="">
+                                    <img src="<?php echo 'users/company/uploads/profile/' . rawurlencode(!empty($row['profile_pic']) ? $row['profile_pic'] : 'default.jpg'); ?>" class="img-fluid rounded-circle" style="width: 120px;height: 120px;object-fit:cover;" alt="<?php echo safe_html($row['name']); ?>">
                                 </div>
                                 <div class="col-6">
-                                    <a href="#" class="h5"><?php echo $row['name']; ?></a>
+                                    <span class="h5 font-weight-bold"><?php echo safe_html($row['name']); ?></span>
                                     <div class="d-flex my-3">
                                         <?php
-                                        $avg_stars = $row['avg_stars'];
+                                        $avg_stars = (float)($row['avg_stars'] ?? 0);
                                         $filled_stars = intval($avg_stars);
                                         $half_star = $avg_stars - $filled_stars >= 0.5;
 
@@ -804,7 +804,7 @@ require('php/connect.php');
                                         }
                                         ?>
                                     </div>
-                                    <small class="me-5"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="currentColor"><?php echo $row['place'] . ', ' . $row['district']; ?></a></small>
+                                    <small class="me-5"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <span class="currentColor"><?php echo safe_html($row['place'] . ', ' . $row['district']); ?></span></small>
                                     <!-- <p> Wedding, birthday, Function</p> -->
                                     <div class="d-flex justify-content-between flex-lg-wrap">
                                         <!-- <a href="TrisolEvents.html" class="btn border border-secondary rounded-pill px-3 text-primary">Book Know</a> -->

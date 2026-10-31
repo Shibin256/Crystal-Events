@@ -45,42 +45,40 @@ require('header.php');
                     </thead>
                     <tbody>
                         <?php
-                        $sql = "select bookings.*,events.*,company.*,category.*,events.name as event_name,company.name as company_name  from bookings,events,company,category where company.email=events.company_email and category.cat_id=events.category and events.event_id=bookings.event_id and user_email='$email' and book_status=2 order by book_status,event_date_time";
-                        $res = sel($sql);
+                        $sql = "select bookings.*,events.*,company.*,category.*,events.name as event_name,company.name as company_name from bookings,events,company,category where company.email=events.company_email and category.cat_id=events.category and events.event_id=bookings.event_id and user_email=? and book_status=2 order by book_status,event_date_time";
+                        $res = sel($sql, [$email]);
 
-                        while ($row = mysqli_fetch_assoc($res)) {
+                        if ($res) {
+                            while ($row = mysqli_fetch_assoc($res)) {
                         ?>
                         <tr>
-                            <td><?php echo $row['book_id']; ?></td>
+                            <td><?php echo safe_html($row['book_id']); ?></td>
                             <td><a href="javascript:;" data-toggle="modal" data-target="#exampleModal"
-                                    onclick="{document.getElementById('name').innerHTML='<?php echo $row['event_name']; ?>';document.getElementById('category').innerHTML='<?php echo $row['cat_title']; ?>';document.getElementById('requirements').innerHTML='<?php echo $row['requirements']; ?>'}"><?php echo $row['event_name']; ?></a>
-                            <td><?php echo $row['name']; ?></td>
-                            <td><?php echo $row['email']; ?></td>
+                                    onclick="{document.getElementById('name').innerHTML=<?php echo htmlspecialchars(json_encode($row['event_name']), ENT_QUOTES, 'UTF-8'); ?>;document.getElementById('category').innerHTML=<?php echo htmlspecialchars(json_encode($row['cat_title']), ENT_QUOTES, 'UTF-8'); ?>;document.getElementById('requirements').innerHTML=<?php echo htmlspecialchars(json_encode($row['requirements']), ENT_QUOTES, 'UTF-8'); ?>}"><?php echo safe_html($row['event_name']); ?></a></td>
+                            <td><?php echo safe_html($row['company_name'] ?? $row['name']); ?></td>
+                            <td><?php echo safe_html($row['company_email'] ?? $row['email']); ?></td>
                             <td><?php echo date_format(date_create($row['event_date_time']), 'd-m-Y h:i A'); ?></td>
-                            <td><?php echo $row['event_place']; ?></td>
-                            <td><?php echo $row['event_district']; ?></td>
-                            <td><?php echo $row['event_pincode']; ?></td>
-                            <td><?php echo $row['requirements']; ?></td>
-                            <td><?php echo $row['reply']; ?></td>
-                            <td><?php echo $row['price']; ?></td>
+                            <td><?php echo safe_html($row['event_place']); ?></td>
+                            <td><?php echo safe_html($row['event_district']); ?></td>
+                            <td><?php echo safe_html($row['event_pincode']); ?></td>
+                            <td><?php echo safe_html($row['requirements']); ?></td>
+                            <td><?php echo safe_html($row['reply']); ?></td>
+                            <td>₹<?php echo number_format((float)$row['price'], 2); ?></td>
                             <td>
                                 <div class="btn-group">
                                     <?php
                                         if ($row['pay_id1'] == 0) {
                                         ?>
-                                    <button class="btn btn-sm btn-primary" data-toggle="modal"
-                                        data-target="#exampleModal1"
-                                        onclick="pay('<?php echo $row['book_id']; ?>',<?php echo round($row['price'] * 0.40); ?>)">Pay
-                                        Advance Now</button>
+                                    <button class="btn btn-sm btn-primary"
+                                        onclick="pay(<?php echo (int)$row['book_id']; ?>, <?php echo (int)round($row['price'] * 0.40); ?>)">Pay Advance Now</button>
                                     <button class="btn btn-sm btn-danger"
-                                        onclick="cancel('<?php echo $row['book_id']; ?>')">Cancel</button>
+                                        onclick="cancel(<?php echo (int)$row['book_id']; ?>)">Cancel</button>
                                     <?php
                                         }
                                         if ($row['pay_id1'] != 0 && $row['pay_id2'] == 0) {
                                         ?>
-                                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#exampleModal1"
-                                        onclick="pay2('<?php echo $row['book_id']; ?>',<?php echo $row['price'] - round($row['price'] * 0.40); ?>)">Pay
-                                        Balance Now</button>
+                                    <button class="btn btn-sm btn-info"
+                                        onclick="pay2(<?php echo (int)$row['book_id']; ?>, <?php echo (int)($row['price'] - round($row['price'] * 0.40)); ?>)">Pay Balance Now</button>
                                     <?php
                                         }
                                         ?>
@@ -89,6 +87,7 @@ require('header.php');
                         </tr>
 
                         <?php
+                            }
                         }
                         ?>
                     </tbody>
@@ -185,64 +184,87 @@ $(document).ready(function() {
     });
 });
 
-function pay(book_id, amt) {
-    <?php
-        $sql = "select * from users where email='$email'";
-        $res = sel($sql);
-        $row = mysqli_fetch_assoc($res);
+var IS_MOCK_PAYMENTS = <?php echo defined('MOCK_PAYMENTS') && MOCK_PAYMENTS ? 'true' : 'false'; ?>;
 
-        ?>
-    var options = {
-        "key": "<?php echo $apikey ?>", // Enter the Key ID generated from the Dashboard
-        "amount": amt *
-            100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-        "currency": "INR",
-        "name": "Crystal Events",
-        "description": "Payment",
-        "image": "images/logo.png",
-        //"order_id": "order_9A33XWu170gUtm", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-        // "callback_url": "php/success.php?amt=" + amt,
-        "handler": function(response) {
-            console.log(response.razorpay_payment_id);
-            $.ajax({
-                url: "php/success.php",
-                type: "post",
-                data: {
-                    success: "check",
-                    book_id: book_id,
-                    amt: amt,
-                    response: response.razorpay_payment_id
-
-
-                },
-                beforeSend: function() {
-                    Swal.fire({
-                        title: "Please wait for a while...",
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                    });
-                    Swal.showLoading();
-                },
-                success: function(res) {
-                    console.log(res);
-                    Swal.close();
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Payment Success!',
-                    }).then((result) => {
-                        window.location.reload(true);
-                    })
-
-                }
+function processPaymentAjax(url, book_id, amt, responseRef) {
+    Swal.fire({
+        title: "Processing payment...",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => { Swal.showLoading(); }
+    });
+    $.ajax({
+        url: url,
+        type: "post",
+        data: {
+            success: "check",
+            book_id: book_id,
+            amt: amt,
+            response: responseRef
+        },
+        dataType: "json",
+        success: function(res) {
+            Swal.close();
+            Swal.fire({
+                icon: 'success',
+                title: 'Payment Success!',
+                text: 'Amount: ₹' + (res.amount || amt)
+            }).then(() => {
+                window.location.reload(true);
             });
         },
-        "prefill": {
-            "name": "<?php echo $row['firstname'] . ' ' . $row['lastname'] ?>",
-            "email": "<?php echo $row['email'] ?>",
-            "contact": "<?php echo $row['phone'] ?>"
+        error: function(xhr) {
+            Swal.close();
+            var errMsg = 'Payment failed.';
+            try {
+                var json = JSON.parse(xhr.responseText);
+                if (json.message) errMsg = json.message;
+            } catch (e) {}
+            Swal.fire({
+                icon: 'error',
+                title: 'Payment Error',
+                text: errMsg
+            });
+        }
+    });
+}
+
+function pay(book_id, amt) {
+    if (IS_MOCK_PAYMENTS) {
+        Swal.fire({
+            title: 'Confirm Advance Payment',
+            text: 'Pay 40% Advance (₹' + amt + ') via Mock Payment Gateway?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Pay ₹' + amt
+        }).then((result) => {
+            if (result.isConfirmed) {
+                processPaymentAjax("php/success.php", book_id, amt, 'mock_adv_' + Date.now());
+            }
+        });
+        return;
+    }
+
+    <?php
+    $uRes = sel("select * from users where email=?", [$email]);
+    $uRow = $uRes ? mysqli_fetch_assoc($uRes) : [];
+    ?>
+    var options = {
+        "key": "<?php echo safe_html($apikey); ?>",
+        "amount": amt * 100,
+        "currency": "INR",
+        "name": "Crystal Events",
+        "description": "Advance Payment (40%)",
+        "image": "images/logo.png",
+        "handler": function(response) {
+            processPaymentAjax("php/success.php", book_id, amt, response.razorpay_payment_id || response);
         },
-        "notes": {
-            "address": "Razorpay Corporate Office"
+        "prefill": {
+            "name": <?php echo json_encode(($uRow['firstname'] ?? '') . ' ' . ($uRow['lastname'] ?? '')); ?>,
+            "email": <?php echo json_encode($uRow['email'] ?? ''); ?>,
+            "contact": <?php echo json_encode($uRow['phone'] ?? ''); ?>
         },
         "theme": {
             "color": "#3399cc"
@@ -253,61 +275,41 @@ function pay(book_id, amt) {
 }
 
 function pay2(book_id, amt) {
-    <?php
-        $sql = "select * from users where email='$email'";
-        $res = sel($sql);
-        $row = mysqli_fetch_assoc($res);
+    if (IS_MOCK_PAYMENTS) {
+        Swal.fire({
+            title: 'Confirm Balance Payment',
+            text: 'Pay 60% Balance (₹' + amt + ') via Mock Payment Gateway?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Pay ₹' + amt
+        }).then((result) => {
+            if (result.isConfirmed) {
+                processPaymentAjax("php/success2.php", book_id, amt, 'mock_bal_' + Date.now());
+            }
+        });
+        return;
+    }
 
-        ?>
+    <?php
+    $uRes = sel("select * from users where email=?", [$email]);
+    $uRow = $uRes ? mysqli_fetch_assoc($uRes) : [];
+    ?>
     var options = {
-        "key": "<?php echo $apikey ?>", // Enter the Key ID generated from the Dashboard
-        "amount": amt *
-            100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        "key": "<?php echo safe_html($apikey); ?>",
+        "amount": amt * 100,
         "currency": "INR",
         "name": "Crystal Events",
-        "description": "Payment",
+        "description": "Balance Payment (60%)",
         "image": "images/logo.png",
-        //"order_id": "order_9A33XWu170gUtm", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-        // "callback_url": "php/success.php?amt=" + amt,
         "handler": function(response) {
-            console.log(response);
-            $.ajax({
-                url: "php/success2.php",
-                type: "post",
-                data: {
-                    success: "check",
-                    book_id: book_id,
-                    amt: amt,
-                    response: response
-
-                },
-                beforeSend: function() {
-                    Swal.fire({
-                        title: "Please wait for a while...",
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                    });
-                    Swal.showLoading();
-                },
-                success: function(res) {
-                    Swal.close();
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Payment Success!',
-                    }).then((result) => {
-                        window.location.reload(true);
-                    })
-
-                }
-            });
+            processPaymentAjax("php/success2.php", book_id, amt, response.razorpay_payment_id || response);
         },
         "prefill": {
-            "name": "<?php echo $row['firstname'] . ' ' . $row['lastname'] ?>",
-            "email": "<?php echo $row['email'] ?>",
-            "contact": "<?php echo $row['phone'] ?>"
-        },
-        "notes": {
-            "address": "Razorpay Corporate Office"
+            "name": <?php echo json_encode(($uRow['firstname'] ?? '') . ' ' . ($uRow['lastname'] ?? '')); ?>,
+            "email": <?php echo json_encode($uRow['email'] ?? ''); ?>,
+            "contact": <?php echo json_encode($uRow['phone'] ?? ''); ?>
         },
         "theme": {
             "color": "#3399cc"

@@ -44,10 +44,10 @@ require('header.php');
                         while ($row = mysqli_fetch_assoc($res)) {
                         ?>
                             <tr>
-                                <td><?php echo $row['contact_id']; ?></td>
-                                <td><?php echo $row['name']; ?></td>
-                                <td><?php echo $row['email']; ?></td>
-                                <td><?php echo $row['message']; ?></td>
+                                <td><?php echo safe_html($row['contact_id']); ?></td>
+                                <td><?php echo safe_html($row['name']); ?></td>
+                                <td><?php echo safe_html($row['email']); ?></td>
+                                <td><?php echo nl2br(safe_html($row['message'])); ?></td>
                             </tr>
 
                         <?php

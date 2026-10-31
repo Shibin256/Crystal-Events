@@ -1,74 +1,78 @@
 <?php
 session_start();
+require_once __DIR__ . '/../../../php/connect.php';
+
+if (!isset($_SESSION['email']) || !isset($_SESSION['usertype']) || (int)$_SESSION['usertype'] !== 2) {
+    http_response_code(403);
+    echo "<p style='text-align: center;'>Unauthorized</p>";
+    exit;
+}
+
 $email = $_SESSION['email'];
 
-require("../../../php/connect.php");
-
 if (isset($_POST['searchp']) || isset($_POST['cat'])) {
+    $search = trim($_POST['search'] ?? '');
+    $cat = trim($_POST['cat'] ?? 'all');
 
-    $search = $_POST['search'];
-    $cat = $_POST['cat'];
+    $sql = "SELECT events.*, category.cat_title, company.name AS company_name, events.name AS event_name 
+            FROM events 
+            JOIN category ON events.category = category.cat_id 
+            JOIN company ON company.email = events.company_email 
+            WHERE events.name LIKE ?";
+    $params = ['%' . $search . '%'];
 
-    $sql = "select events.*,category.*,company.*,company.name as company_name,events.name as event_name from events,category,company where events.category=category.cat_id and company.email=events.company_email and events.name like '%" . $search . "%'";
+    if ($cat !== 'all' && is_numeric($cat)) {
+        $sql .= " AND category.cat_id = ?";
+        $params[] = (int)$cat;
+    }
 
+    $sql .= " ORDER BY events.event_id DESC";
+    $result = sel($sql, $params);
 
-    if ($cat != 'all')
-        $sql .= " and category.cat_id='$cat'";
-
-    $num = num($sql);
-    if ($num == 0) {
-        echo "<p style='text-align: center;'>No results found!!!</p>";
+    if (!$result || mysqli_num_rows($result) === 0) {
+        echo "<p style='text-align: center; width: 100%; padding: 20px;'>No results found!</p>";
     } else {
-        $result = sel($sql);
-        $n = 0;
+        // Preload user's cart event IDs to avoid N+1 queries
+        $cartEvents = [];
+        $cartRes = sel("SELECT event_id FROM cart WHERE user=?", [$email]);
+        if ($cartRes) {
+            while ($cRow = mysqli_fetch_assoc($cartRes)) {
+                $cartEvents[(int)$cRow['event_id']] = true;
+            }
+        }
+
         while ($row = mysqli_fetch_assoc($result)) {
-            $n++;
+            $eventId = (int)$row['event_id'];
+            $inCart = isset($cartEvents[$eventId]);
 ?>
-            <div class="col-md-4" style="margin: 0px;display: inline-block;padding: 15px;">
-                <div class="card" style="height: 100%;">
-
-                    <div class="card-header">
-                        <?php echo $row['cat_title']; ?>
+            <div class="col-md-4 col-sm-6" style="margin: 0px; display: inline-block; padding: 15px; vertical-align: top;">
+                <div class="card" style="height: 100%; display: flex; flex-direction: column;">
+                    <div class="card-header font-weight-bold" style="background:#f8f9fa;">
+                        <?php echo safe_html($row['cat_title']); ?>
                     </div>
-                    <div class="card-body">
-                        <h5 class="card-title"><?php echo $row['event_name']; ?></h5>
-                        <h6 class="card-title"><?php echo $row['company_name']; ?></h6>
-                        <p class="card-text"><?php echo $row['description']; ?></p>
+                    <div class="card-body" style="flex: 1 1 auto;">
+                        <h5 class="card-title" style="color: #337ab7; font-weight: 600;"><?php echo safe_html($row['event_name']); ?></h5>
+                        <h6 class="card-subtitle mb-2 text-muted"><i class="fa fa-building"></i> <?php echo safe_html($row['company_name']); ?></h6>
+                        <p class="card-text" style="font-size: 13px; color: #555; text-align: justify;"><?php echo nl2br(safe_html($row['description'])); ?></p>
                     </div>
-                    <div class="card-footer">
-                        <div style="display: flex;justify-content: space-evenly">
-                            <?php
-                            $sql2 = "select * from cart where user='$email' and event_id=" . $row['event_id'];
-                            $num = num($sql2);
-                            if ($num != 0) {
-                            ?>
-                                <div class="heart" style="border: none;background: transparent;" onclick="removecart(<?php echo $row['event_id']; ?>)"><button class="btn btn-danger btn-sm">Remove
-                                        from Cart</button></div>
-                            <?php
-                            } else {
-                            ?>
-                                <div class="heart" style="border: none;background: transparent;" onclick="addcart(<?php echo $row['event_id']; ?>)"><button class="btn btn-primary btn-sm">Add to
-                                        Cart</button></div>
-
-                            <?php
-                            }
-                            ?>
-                            <!-- <button class="btn btn-sm btn-primary"
-                                    onclick="window.location.href='view.php?id=<?php //echo $row['event_id']; 
-                                                                                ?>'"><i
-                                        class="fa fa-eye"></i> View</button> -->
+                    <div class="card-footer" style="background: #fafafa; border-top: 1px solid #eee;">
+                        <div style="display: flex; justify-content: space-evenly">
+                            <?php if ($inCart): ?>
+                                <button type="button" class="btn btn-danger btn-sm" onclick="removecart(<?php echo $eventId; ?>)">
+                                    <i class="fa fa-trash"></i> Remove from Cart
+                                </button>
+                            <?php else: ?>
+                                <button type="button" class="btn btn-primary btn-sm" onclick="addcart(<?php echo $eventId; ?>)">
+                                    <i class="fa fa-cart-plus"></i> Add to Cart
+                                </button>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
             </div>
-
 <?php
-
         }
     }
-
-
-    exit();
+    exit;
 }
-
 ?>

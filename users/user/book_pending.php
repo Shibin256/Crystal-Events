@@ -44,31 +44,33 @@ require('header.php');
                     </thead>
                     <tbody>
                         <?php
-                        $sql = "select bookings.*,events.*,company.*,category.*,events.name as event_name,company.name as company_name  from bookings,events,company,category where company.email=events.company_email and category.cat_id=events.category and events.event_id=bookings.event_id and user_email='$email' and (book_status=0 or book_status=1) order by book_status,event_date_time";
-                        $res = sel($sql);
+                        $sql = "select bookings.*,events.*,company.*,category.*,events.name as event_name,company.name as company_name  from bookings,events,company,category where company.email=events.company_email and category.cat_id=events.category and events.event_id=bookings.event_id and user_email=? and (book_status=0 or book_status=1) order by book_status,event_date_time";
+                        $res = sel($sql, [$email]);
 
-                        while ($row = mysqli_fetch_assoc($res)) {
+                        if ($res) {
+                            while ($row = mysqli_fetch_assoc($res)) {
                         ?>
                             <tr>
-                                <td><?php echo $row['book_id']; ?></td>
-                                <td><a href="javascript:;" data-toggle="modal" data-target="#exampleModal" onclick="{document.getElementById('name').innerHTML='<?php echo $row['event_name']; ?>';document.getElementById('category').innerHTML='<?php echo $row['cat_title']; ?>';document.getElementById('description').innerHTML='<?php echo $row['description']; ?>'}"><?php echo $row['event_name']; ?></a>
-                                <td><?php echo $row['name']; ?></td>
-                                <td><?php echo $row['email']; ?></td>
+                                <td><?php echo safe_html($row['book_id']); ?></td>
+                                <td><a href="javascript:;" data-toggle="modal" data-target="#exampleModal" onclick="{document.getElementById('name').innerHTML=<?php echo htmlspecialchars(json_encode($row['event_name']), ENT_QUOTES, 'UTF-8'); ?>;document.getElementById('category').innerHTML=<?php echo htmlspecialchars(json_encode($row['cat_title']), ENT_QUOTES, 'UTF-8'); ?>;document.getElementById('description').innerHTML=<?php echo htmlspecialchars(json_encode($row['description']), ENT_QUOTES, 'UTF-8'); ?>}"><?php echo safe_html($row['event_name']); ?></a></td>
+                                <td><?php echo safe_html($row['company_name'] ?? $row['name']); ?></td>
+                                <td><?php echo safe_html($row['company_email'] ?? $row['email']); ?></td>
                                 <td><?php echo date_format(date_create($row['event_date_time']), 'd-m-Y h:i A'); ?></td>
-                                <td><?php echo $row['event_place']; ?></td>
-                                <td><?php echo $row['event_district']; ?></td>
-                                <td><?php echo $row['event_pincode']; ?></td>
-                                <td><?php echo $row['requirements']; ?></td>
-                                <td><?php echo $row['reply']; ?></td>
+                                <td><?php echo safe_html($row['event_place']); ?></td>
+                                <td><?php echo safe_html($row['event_district']); ?></td>
+                                <td><?php echo safe_html($row['event_pincode']); ?></td>
+                                <td><?php echo safe_html($row['requirements']); ?></td>
+                                <td><?php echo safe_html($row['reply']); ?></td>
                                 <td>
                                     <div class="btn-group">
-                                        <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#exampleModal1" onclick="{document.getElementById('book_id').value='<?php echo $row['book_id']; ?>';document.getElementById('date_time').value='<?php echo $row['event_date_time']; ?>';document.getElementById('place').value='<?php echo $row['event_place']; ?>';document.getElementById('district').value='<?php echo $row['event_district']; ?>';document.getElementById('pincode').value='<?php echo $row['event_pincode']; ?>';document.getElementById('requirements').value='<?php echo $row['requirements'] ?>';}">Edit</button>
-                                        <button class="btn btn-sm btn-danger" onclick="cancel('<?php echo $row['book_id']; ?>')">Cancel</button>
+                                        <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#exampleModal1" onclick="{document.getElementById('book_id').value=<?php echo (int)$row['book_id']; ?>;document.getElementById('date_time').value=<?php echo htmlspecialchars(json_encode($row['event_date_time']), ENT_QUOTES, 'UTF-8'); ?>;document.getElementById('place').value=<?php echo htmlspecialchars(json_encode($row['event_place']), ENT_QUOTES, 'UTF-8'); ?>;document.getElementById('district').value=<?php echo htmlspecialchars(json_encode($row['event_district']), ENT_QUOTES, 'UTF-8'); ?>;document.getElementById('pincode').value=<?php echo htmlspecialchars(json_encode($row['event_pincode']), ENT_QUOTES, 'UTF-8'); ?>;document.getElementById('requirements').value=<?php echo htmlspecialchars(json_encode($row['requirements']), ENT_QUOTES, 'UTF-8'); ?>;}">Edit</button>
+                                        <button class="btn btn-sm btn-danger" onclick="cancel(<?php echo (int)$row['book_id']; ?>)">Cancel</button>
                                     </div>
                                 </td>
                             </tr>
 
                         <?php
+                            }
                         }
                         ?>
                     </tbody>

@@ -64,16 +64,17 @@ require('header.php');
                     </thead>
                     <tbody>
                         <?php
-                        $sql = "select * from complaint where email='$email'";
-                        $res = sel($sql);
+                        $sql = "select * from complaint where email=? order by complaint_id desc";
+                        $res = sel($sql, [$email]);
 
-                        while ($row = mysqli_fetch_assoc($res)) {
+                        if ($res) {
+                            while ($row = mysqli_fetch_assoc($res)) {
                         ?>
                             <tr>
-                                <td><?php echo $row['topic']; ?></td>
-                                <td><?php echo $row['complaint']; ?></td>
+                                <td><?php echo safe_html($row['topic']); ?></td>
+                                <td><?php echo safe_html($row['complaint']); ?></td>
                                 <td><?php echo date_format(date_create($row['submitted_date']), 'd-m-Y h:i A'); ?></td>
-                                <td><?php echo $row['reply']; ?></td>
+                                <td><?php echo safe_html($row['reply']); ?></td>
                                 <td>
                                     <?php
                                     if ($row['status'] == 1)
@@ -85,6 +86,7 @@ require('header.php');
                             </tr>
 
                         <?php
+                            }
                         }
                         ?>
                     </tbody>

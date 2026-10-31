@@ -6,26 +6,31 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 -->
 <?php
 session_start();
-if (!isset($_SESSION['email'])) {
-    echo "<script>window.location.replace('../../index.php')</script>";
+require_once __DIR__ . '/../../php/connect.php';
+
+if (!isset($_SESSION['email']) || !isset($_SESSION['usertype']) || (int)$_SESSION['usertype'] !== 2) {
+    header("Location: ../../login.html");
+    exit;
 }
 $email = $_SESSION['email'];
-require('../../php/connect.php');
 
+$sql = "select status from login where email=?";
+$res = sel($sql, [$email]);
+$lRow = $res ? mysqli_fetch_assoc($res) : null;
+$status = $lRow ? (int)$lRow['status'] : 0;
 
-$sql = "select status from login where email='$email'";
-$res = sel($sql);
-$row = mysqli_fetch_assoc($res);
-$status = $row['status'];
+$currentPage = basename($_SERVER['PHP_SELF']);
+if ($status === 0 && !in_array($currentPage, ['profile.php', 'password.php'])) {
+    header("Location: profile.php");
+    exit;
+}
 
-$sql = "select * from users where email='$email'";
-$res = sel($sql);
-$row = mysqli_fetch_assoc($res);
+$sql = "select * from users where email=?";
+$res = sel($sql, [$email]);
+$row = $res ? mysqli_fetch_assoc($res) : [];
 
-
-$sql2 = "select * from cart where user='$email'";
-$cartcount = num($sql2);
-
+$sql2 = "select cart_id from cart where user=?";
+$cartcount = num($sql2, [$email]);
 ?>
 <!DOCTYPE html>
 
@@ -123,17 +128,17 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <?php
             if ($status == 1) {
             ?>
-            <li id="bikes">
-                <a href="allevents.php" onclick="changem('bikes')">
+            <li id="events">
+                <a href="allevents.php" onclick="changem('events')">
                     <i class="fa fa-search nav_icon"></i>
                     <span class="nav-text">
                         Events
                     </span>
                 </a>
             </li>
-            <li id="bikes">
-                <a href="companies.php" onclick="changem('bikes')">
-                    <i class="fa fa-search nav_icon"></i>
+            <li id="companies">
+                <a href="companies.php" onclick="changem('companies')">
+                    <i class="fa fa-building-o nav_icon"></i>
                     <span class="nav-text">
                         Companies
                     </span>
@@ -244,11 +249,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <li class="dropdown profile_details_drop">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                     <div class="profile_img">
-                                        <img class="prfil-img" style="width: 33px;height: 33px;border-radius: 50%;"
-                                            src="<?php echo 'uploads/profile/' . $row['profile_pic']; ?>"
+                                        <img class="prfil-img" style="width: 33px;height: 33px;border-radius: 50%;object-fit:cover;"
+                                            src="<?php echo 'uploads/profile/' . rawurlencode(!empty($row['profile_pic']) ? $row['profile_pic'] : 'default.jpg'); ?>"
                                             alt="Profile Image">
                                         <span
-                                            style="color: white;"><?php echo $row['firstname'] . " " . $row['lastname']; ?></span>
+                                            style="color: white;"><?php echo safe_html(($row['firstname'] ?? '') . " " . ($row['lastname'] ?? '')); ?></span>
                                         <div class="clearfix"></div>
                                     </div>
                                 </a>

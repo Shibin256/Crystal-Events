@@ -56,12 +56,15 @@ require('header.php');
         <div class="blank">
             <div class="blank-page">
                 <?php
-                $sql = "select * from cart,events,category where events.event_id=cart.event_id and category.cat_id=events.category and user='$email'";
-                $res = sel($sql);
+                $sql = "select cart.cart_id, events.*, category.cat_title, company.name as company_name, company.profile_pic as company_pic from cart join events on events.event_id=cart.event_id join category on category.cat_id=events.category join company on company.email=events.company_email where cart.user=? order by cart.cart_id desc";
+                $res = sel($sql, [$email]);
                 $total = 0;
-                if (num($sql) == 0) {
+                if (!$res || mysqli_num_rows($res) == 0) {
                 ?>
-                    <p>Nothing here!</p>
+                    <div class="alert alert-info text-center" style="margin-top: 20px;">
+                        <h4><i class="fa fa-shopping-cart"></i> Your cart is empty!</h4>
+                        <p><a href="allevents.php" class="btn btn-primary btn-sm mt-3"><i class="fa fa-search"></i> Browse Events</a></p>
+                    </div>
 
                 <?php
                 } else {
@@ -84,24 +87,19 @@ require('header.php');
                                         <?php
                                         $n = 1;
                                         while ($row = mysqli_fetch_assoc($res)) {
-
+                                            $cPic = !empty($row['company_pic']) ? $row['company_pic'] : 'default.jpg';
                                         ?>
                                             <tr>
                                                 <td class="">
                                                     <div class="media">
-                                                        <?php
-                                                        $id = $row['company_email'];
-                                                        $sql2 = "select * from company where email='$id'";
-                                                        $res2 = sel($sql2);
-                                                        $row2 = mysqli_fetch_assoc($res2);
-                                                        ?>
-                                                        <a class="thumbnail pull-left" href=""> <img class="media-object" src="../company/uploads/profile/<?php echo $row2['profile_pic']; ?>" style="width: 72px; height: 72px;"> </a>
+                                                        <a class="thumbnail pull-left" href="view.php?id=<?php echo urlencode($row['company_email']); ?>">
+                                                            <img class="media-object" src="../company/uploads/profile/<?php echo rawurlencode($cPic); ?>" style="width: 72px; height: 72px; object-fit: cover;">
+                                                        </a>
 
                                                         <div class="media-body" style="padding:5px;margin-left:5px;">
-                                                            <h4 class="media-heading"><a href=""><?php echo $row['name']; ?></a>
-                                                            </h4>
-                                                            <h5 class="media-heading"> by <?php echo $row2['name']; ?></h5>
-                                                            <p><?php echo $row['cat_title']; ?></p>
+                                                            <h4 class="media-heading"><?php echo safe_html($row['name']); ?></h4>
+                                                            <h5 class="media-heading text-muted">by <?php echo safe_html($row['company_name']); ?></h5>
+                                                            <p><span class="badge badge-secondary"><?php echo safe_html($row['cat_title']); ?></span></p>
 
                                                         </div>
                                                     </div>
@@ -138,7 +136,7 @@ require('header.php');
                                                 </td>
                                                 <td class="" style="vertical-align: middle;">
                                                     <div style="display: flex;align-items: center;justify-content: center;">
-                                                        <button type="button" class="btn btn-danger btn-sm" onclick="remove(<?php echo $row['cart_id']; ?>)">
+                                                        <button type="button" class="btn btn-danger btn-sm" onclick="remove(<?php echo (int)$row['cart_id']; ?>)">
                                                             <span class="glyphicon glyphicon-remove"></span> Remove
                                                         </button>
                                                     </div>

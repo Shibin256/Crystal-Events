@@ -47,13 +47,13 @@ require('header.php');
                         while ($row = mysqli_fetch_assoc($res)) {
                         ?>
                             <tr>
-                                <td><?php echo $row['complaint_id']; ?></td>
-                                <td><?php echo $row['topic']; ?></td>
-                                <td><?php echo $row['complaint']; ?></td>
+                                <td><?php echo safe_html($row['complaint_id']); ?></td>
+                                <td><?php echo safe_html($row['topic']); ?></td>
+                                <td><?php echo safe_html($row['complaint']); ?></td>
                                 <td><?php echo date_format(date_create($row['submitted_date']), 'd-m-Y h:i A'); ?></td>
-                                <td><?php echo $row['firstname'] . " " . $row['lastname']; ?></td>
-                                <td><?php echo $row['email']; ?></td>
-                                <td><?php echo $row['reply']; ?></td>
+                                <td><?php echo safe_html($row['firstname'] . " " . $row['lastname']); ?></td>
+                                <td><?php echo safe_html($row['email']); ?></td>
+                                <td><?php echo safe_html($row['reply']); ?></td>
                                 <td>
                                     <?php
                                     if ($row['status'] == 1)
@@ -66,7 +66,7 @@ require('header.php');
                                     <?php
                                     if ($row['status'] == 1) {
                                     ?>
-                                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="document.getElementById('complaint_id').value='<?php echo $row['complaint_id']; ?>';">
+                                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="document.getElementById('complaint_id').value='<?php echo (int)$row['complaint_id']; ?>';">
                                             Update
                                         </button>
                                     <?php

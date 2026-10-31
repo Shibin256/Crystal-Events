@@ -73,21 +73,21 @@ $row = mysqli_fetch_assoc($res);
                     <div class="blank-page">
                         <div class="profile-container">
                             <div class="profile-image">
-                                <img src="<?php echo 'uploads/profile/' . $row['profile_pic']; ?>" alt="Profile Image">
+                                <img src="<?php echo 'uploads/profile/' . rawurlencode(!empty($row['profile_pic']) ? $row['profile_pic'] : 'default.jpg'); ?>" alt="Profile Image">
                                 <div class="edit-icon">
                                     <i class="fa fa-pencil"></i>
                                 </div>
-                                <input type="file" id="file-input" style="display: none;" accept=".jpg, .jpeg, .png">
+                                <input type="file" id="file-input" style="display: none;" accept=".jpg, .jpeg, .png, .webp">
                             </div>
                         </div>
-                        <div class="progressbar-heading grids-heading" style="margin-bottom: 80px;">
-                            <h2><?php echo $row['name']; ?></h2>
+                        <div class="progressbar-heading grids-heading" style="margin-bottom: 30px;">
+                            <h2><?php echo safe_html($row['name']); ?></h2>
                         </div>
-                        <h4 style="margin-top: 15px;" id="h4.-bootstrap-heading"><?php echo $row['email']; ?></h4>
-                        <h4 style="margin-top: 15px;" id="h4.-bootstrap-heading"><?php echo $row['phone']; ?></h4>
-                        <h4 style="margin-top: 15px;" id="h4.-bootstrap-heading"><?php echo $row['ownername']; ?></h4>
-                        <br><br>
-                        <p style="text-align: justify;"><?php echo $row['about']; ?></p>
+                        <h4 style="margin-top: 15px;"><i class="fa fa-envelope"></i> <?php echo safe_html($row['email']); ?></h4>
+                        <h4 style="margin-top: 15px;"><i class="fa fa-phone"></i> <?php echo safe_html($row['phone']); ?></h4>
+                        <h4 style="margin-top: 15px;"><i class="fa fa-user"></i> <?php echo safe_html($row['ownername']); ?></h4>
+                        <br>
+                        <p style="text-align: justify; line-height: 1.6; color: #666;"><?php echo nl2br(safe_html($row['about'])); ?></p>
                     </div>
 
 
@@ -103,65 +103,56 @@ $row = mysqli_fetch_assoc($res);
                                     <form action="php/profile.php" method="post">
                                         <div class="form-group">
                                             <label for="">Email address</label>
-                                            <input type="email" name="email" disabled class="form-control" placeholder="Email" value="<?php echo $row['email']; ?>">
+                                            <input type="email" name="email" disabled class="form-control" placeholder="Email" value="<?php echo safe_html($row['email']); ?>">
                                         </div>
                                         <div class="form-group">
                                             <label for="">Name</label>
-                                            <input type="text" name="name" class="form-control" placeholder="Name" pattern="[A-Za-z ]+" title="Only letters and spaces are allowed" required value="<?php echo $row['name']; ?>">
+                                            <input type="text" name="name" class="form-control" placeholder="Name" required value="<?php echo safe_html($row['name']); ?>">
                                         </div>
                                         <div class="form-group">
                                             <label for="">Owner name</label>
-                                            <input type="text" name="ownername" class="form-control" placeholder="Owner Name" pattern="[A-Za-z ]+" title="Only letters and spaces are allowed" required value="<?php echo $row['ownername']; ?>">
+                                            <input type="text" name="ownername" class="form-control" placeholder="Owner Name" required value="<?php echo safe_html($row['ownername']); ?>">
                                         </div>
                                         <div class="form-group">
                                             <label for="">Mobile</label>
-                                            <input type="text" name="phone" class="form-control" placeholder="mobile number" required pattern="\d{10}" title="Please enter a 10-digit phone number" value="<?php echo $row['phone']; ?>">
+                                            <input type="text" name="phone" class="form-control" placeholder="Mobile number" required pattern="\d{10}" title="Please enter a 10-digit phone number" value="<?php echo safe_html($row['phone']); ?>">
                                         </div>
                                         <div class="form-group">
-                                            <label for="">Street Name</label>
-                                            <input type="text" name="place" class="form-control" pattern="[A-Za-z ]+" title="Only letters and spaces are allowed" placeholder="street name" required value="<?php echo $row['place']; ?>">
+                                            <label for="">Street / Place</label>
+                                            <input type="text" name="place" class="form-control" placeholder="Street / Place" required value="<?php echo safe_html($row['place']); ?>">
                                         </div>
                                         <div class="form-group">
                                             <label for="">District</label>
-                                            <select class="form-control" placeholder="District" name="district" id="dist" required="">
-                                                <option value="Kasargod">Kasargod</option>
-                                                <option value="Kannur">Kannur</option>
-                                                <option value="Waynad">Wayanad</option>
-                                                <option value="Kozhikode">Kozhikode</option>
-                                                <option value="Malappuram">Malappuram</option>
-                                                <option value="Palakkad">Palakkad</option>
-                                                <option value="Thrissur">Thrissur</option>
-                                                <option value="Ernakulam">Ernakulam</option>
-                                                <option value="Idukki">Idukki</option>
-                                                <option value="Kottayam">Kottayam</option>
-                                                <option value="Alappuzha">Alappuzha</option>
-                                                <option value="Pathanamthitta">Pathanamthitta</option>
-                                                <option value="Kollam">Kollam</option>
-                                                <option value="Thiruvananthapuram">Thiruvananthapuram</option>
-
+                                            <select class="form-control" name="district" id="dist" required="">
+                                                <?php
+                                                $districts = ["Kasargod", "Kannur", "Wayanad", "Kozhikode", "Malappuram", "Palakkad", "Thrissur", "Ernakulam", "Idukki", "Kottayam", "Alappuzha", "Pathanamthitta", "Kollam", "Thiruvananthapuram"];
+                                                foreach ($districts as $d):
+                                                ?>
+                                                    <option value="<?php echo $d; ?>" <?php echo ($row['district'] === $d) ? 'selected' : ''; ?>><?php echo $d; ?></option>
+                                                <?php endforeach; ?>
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label for="">Pincode</label>
-                                            <input type="text" name="pincode" class="form-control" placeholder="pincode" pattern="\d{6}" title="Please enter a 6-digit pin number" required value="<?php echo $row['pincode']; ?>">
+                                            <input type="text" name="pincode" class="form-control" placeholder="Pincode" pattern="\d{6}" title="Please enter a 6-digit pin number" required value="<?php echo safe_html($row['pincode']); ?>">
                                         </div>
                                         <div class="form-group">
                                             <label for="">Established date</label>
-                                            <input type="date" name="est_date" class="form-control" placeholder="date of birth" required value="<?php echo $row['est_date']; ?>">
+                                            <input type="date" name="est_date" class="form-control" required value="<?php echo safe_html($row['est_date']); ?>">
                                         </div>
                                         <div class="form-group">
-                                            <label for="">Account number</label>
-                                            <input type="text" name="acc_no" class="form-control" pattern="\d{11,16}" title="Please enter a valid account number " placeholder="account number" required value="<?php echo $row['acc_no']; ?>">
+                                            <label for="">Bank Account Number</label>
+                                            <input type="text" name="acc_no" class="form-control" placeholder="Account Number" value="<?php echo safe_html($row['acc_no']); ?>">
                                         </div>
                                         <div class="form-group">
                                             <label for="">IFSC Code</label>
-                                            <input type="text" name="ifsc_code" class="form-control" placeholder="ifsc codes" pattern="[A-Z]{4}\d{7}" title="Please enter a valid IFSC code " required value="<?php echo $row['ifsc_code']; ?>">
+                                            <input type="text" name="ifsc_code" class="form-control" placeholder="IFSC Code" value="<?php echo safe_html($row['ifsc_code']); ?>">
                                         </div>
                                         <div class="form-group">
-                                            <label for="">About</label>
-                                            <textarea name="about" rows="10" class="form-control" placeholder="About" pattern="[A-Za-z ]+" title="Please enter a valid data" required><?php echo $row['about']; ?></textarea>
+                                            <label for="">About Company</label>
+                                            <textarea rows="5" class="form-control" name="about" placeholder="Tell visitors about your company..."><?php echo safe_html($row['about']); ?></textarea>
                                         </div>
-                                        <button type="submit" class="btn btn-default w3ls-button" name="edit">Submit</button>
+                                        <button type="submit" class="btn btn-primary" name="edit">Save Profile</button>
                                     </form>
                                 </div>
                             </div>

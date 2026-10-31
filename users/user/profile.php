@@ -73,27 +73,23 @@ $row = mysqli_fetch_assoc($res);
                     <div class="blank-page">
                         <div class="profile-container">
                             <div class="profile-image">
-                                <img src="<?php echo 'uploads/profile/' . $row['profile_pic']; ?>" alt="Profile Image">
+                                <img src="<?php echo 'uploads/profile/' . rawurlencode(!empty($row['profile_pic']) ? $row['profile_pic'] : 'default.jpg'); ?>" alt="Profile Image">
                                 <div class="edit-icon">
                                     <i class="fa fa-pencil"></i>
                                 </div>
-                                <input type="file" id="file-input" style="display: none;" accept=".jpg, .jpeg, .png">
+                                <input type="file" id="file-input" style="display: none;" accept=".jpg, .jpeg, .png, .webp">
                             </div>
                         </div>
-                        <div class="progressbar-heading grids-heading" style="margin-bottom: 80px;">
-                            <h2><?php echo $row['firstname'] . " " . $row['lastname']; ?></h2>
+                        <div class="progressbar-heading grids-heading" style="margin-bottom: 30px;">
+                            <h2><?php echo safe_html(($row['firstname'] ?? '') . " " . ($row['lastname'] ?? '')); ?></h2>
                         </div>
-                        <h4 style="margin-top: 15px;" id="h4.-bootstrap-heading"><?php echo $row['email']; ?></h4>
-                        <h4 style="margin-top: 15px;" id="h4.-bootstrap-heading"><?php echo $row['phone']; ?></h4>
-                        <h4 style="margin-top: 15px;" id="h4.-bootstrap-heading"><?php echo $row['housename']; ?></h4>
-                        <h4 style="margin-top: 15px;" id="h4.-bootstrap-heading"><?php echo $row['place']; ?></h4>
-                        <h4 style="margin-top: 15px;" id="h4.-bootstrap-heading"><?php echo $row['district']; ?></h4>
-                        <h4 style="margin-top: 15px;" id="h4.-bootstrap-heading"><?php echo $row['pincode']; ?></h4>
-                        <h4 style="margin-top: 15px;" id="h4.-bootstrap-heading"><?php echo $row['date_of_birth']; ?>
-                        </h4>
-                        <h4 style="margin-top: 15px;" id="h4.-bootstrap-heading"><?php echo $row['acc_no']; ?>
-                        </h4>
-                        <h4 style="margin-top: 15px;" id="h4.-bootstrap-heading"><?php echo $row['ifsc_code']; ?></h4>
+                        <h4 style="margin-top: 15px;"><i class="fa fa-envelope"></i> <?php echo safe_html($row['email']); ?></h4>
+                        <h4 style="margin-top: 15px;"><i class="fa fa-phone"></i> <?php echo safe_html($row['phone']); ?></h4>
+                        <h4 style="margin-top: 15px;"><i class="fa fa-home"></i> <?php echo safe_html($row['housename']); ?></h4>
+                        <h4 style="margin-top: 15px;"><i class="fa fa-map-marker"></i> <?php echo safe_html($row['place']); ?></h4>
+                        <h4 style="margin-top: 15px;"><i class="fa fa-location-arrow"></i> <?php echo safe_html($row['district']); ?></h4>
+                        <h4 style="margin-top: 15px;"><i class="fa fa-tag"></i> <?php echo safe_html($row['pincode']); ?></h4>
+                        <h4 style="margin-top: 15px;"><i class="fa fa-birthday-cake"></i> <?php echo safe_html($row['date_of_birth']); ?></h4>
                     </div>
 
 
@@ -109,65 +105,56 @@ $row = mysqli_fetch_assoc($res);
                                     <form action="php/profile.php" method="post">
                                         <div class="form-group">
                                             <label for="">Email address</label>
-                                            <input type="email" name="email" disabled class="form-control" placeholder="Email" value="<?php echo $row['email']; ?>">
+                                            <input type="email" name="email" disabled class="form-control" placeholder="Email" value="<?php echo safe_html($row['email']); ?>">
                                         </div>
                                         <div class="form-group">
                                             <label for="">First name</label>
-                                            <input type="text" name="firstname" class="form-control" placeholder="First name" pattern="[A-Za-z ]+" title="Only letters and spaces are allowed" required value="<?php echo $row['firstname']; ?>">
+                                            <input type="text" name="firstname" class="form-control" placeholder="First name" required value="<?php echo safe_html($row['firstname']); ?>">
                                         </div>
                                         <div class="form-group">
                                             <label for="">Last name</label>
-                                            <input type="text" name="lastname" class="form-control" placeholder="Last name" pattern="[A-Za-z ]+" title="Only letters and spaces are allowed" required value="<?php echo $row['lastname']; ?>">
+                                            <input type="text" name="lastname" class="form-control" placeholder="Last name" required value="<?php echo safe_html($row['lastname']); ?>">
                                         </div>
                                         <div class="form-group">
                                             <label for="">Mobile</label>
-                                            <input type="text" name="phone" class="form-control" placeholder="mobile number" required pattern="\d{10}" title="Please enter a 10-digit phone number" value="<?php echo $row['phone']; ?>">
+                                            <input type="text" name="phone" class="form-control" placeholder="Mobile number" required pattern="\d{10}" title="Please enter a 10-digit phone number" value="<?php echo safe_html($row['phone']); ?>">
                                         </div>
                                         <div class="form-group">
                                             <label for="">House Name</label>
-                                            <input type="text" name="housename" class="form-control" pattern="[A-Za-z0-9 ]+" title="Only letters,digits and spaces are allowed" placeholder="house name" required value="<?php echo $row['housename']; ?>">
+                                            <input type="text" name="housename" class="form-control" placeholder="House name" required value="<?php echo safe_html($row['housename']); ?>">
                                         </div>
                                         <div class="form-group">
                                             <label for="">Place</label>
-                                            <input type="text" name="place" class="form-control" pattern="[A-Za-z ]+" title="Only letters and spaces are allowed" placeholder="street name" required value="<?php echo $row['place']; ?>">
+                                            <input type="text" name="place" class="form-control" placeholder="Place" required value="<?php echo safe_html($row['place']); ?>">
                                         </div>
                                         <div class="form-group">
                                             <label for="">District</label>
-                                            <select class="form-control" placeholder="District" name="district" id="dist" required="">
-                                                <option value="Kasargod">Kasargod</option>
-                                                <option value="Kannur">Kannur</option>
-                                                <option value="Waynad">Wayanad</option>
-                                                <option value="Kozhikode">Kozhikode</option>
-                                                <option value="Malappuram">Malappuram</option>
-                                                <option value="Palakkad">Palakkad</option>
-                                                <option value="Thrissur">Thrissur</option>
-                                                <option value="Ernakulam">Ernakulam</option>
-                                                <option value="Idukki">Idukki</option>
-                                                <option value="Kottayam">Kottayam</option>
-                                                <option value="Alappuzha">Alappuzha</option>
-                                                <option value="Pathanamthitta">Pathanamthitta</option>
-                                                <option value="Kollam">Kollam</option>
-                                                <option value="Thiruvananthapuram">Thiruvananthapuram</option>
-
+                                            <select class="form-control" name="district" id="dist" required="">
+                                                <?php
+                                                $districts = ["Kasargod", "Kannur", "Wayanad", "Kozhikode", "Malappuram", "Palakkad", "Thrissur", "Ernakulam", "Idukki", "Kottayam", "Alappuzha", "Pathanamthitta", "Kollam", "Thiruvananthapuram"];
+                                                foreach ($districts as $d):
+                                                ?>
+                                                    <option value="<?php echo $d; ?>" <?php echo ($row['district'] === $d) ? 'selected' : ''; ?>><?php echo $d; ?></option>
+                                                <?php endforeach; ?>
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label for="">Pincode</label>
-                                            <input type="text" name="pincode" class="form-control" placeholder="pincode" pattern="\d{6}" title="Please enter a 6-digit pin number" required value="<?php echo $row['pincode']; ?>">
+                                            <input type="text" name="pincode" class="form-control" placeholder="Pincode" pattern="\d{6}" title="Please enter a 6-digit pin number" required value="<?php echo safe_html($row['pincode']); ?>">
                                         </div>
                                         <div class="form-group">
                                             <label for="">Date Of Birth</label>
-                                            <input type="date" name="date_of_birth" class="form-control" placeholder="date of birth" required value="<?php echo $row['date_of_birth']; ?>">
+                                            <input type="date" name="date_of_birth" class="form-control" placeholder="Date of birth" value="<?php echo safe_html($row['date_of_birth']); ?>">
                                         </div>
                                         <div class="form-group">
                                             <label for="">Account number</label>
-                                            <input type="text" name="acc_no" class="form-control" pattern="\d{11,16}" title="Please enter a valid account number " placeholder="account number" required value="<?php echo $row['acc_no']; ?>">
+                                            <input type="text" name="acc_no" class="form-control" placeholder="Account number" value="<?php echo safe_html($row['acc_no']); ?>">
                                         </div>
                                         <div class="form-group">
                                             <label for="">IFSC Code</label>
-                                            <input type="text" name="ifsc_code" class="form-control" placeholder="ifsc codes" pattern="[A-Z]{4}\d{7}" title="Please enter a valid IFSC code " required value="<?php echo $row['ifsc_code']; ?>">
+                                            <input type="text" name="ifsc_code" class="form-control" placeholder="IFSC Code" value="<?php echo safe_html($row['ifsc_code']); ?>">
                                         </div>
-                                        <button type="submit" class="btn btn-default w3ls-button" name="edit">Submit</button>
+                                        <button type="submit" class="btn btn-primary" name="edit">Save Profile</button>
                                     </form>
                                 </div>
                             </div>

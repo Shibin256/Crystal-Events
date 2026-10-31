@@ -52,29 +52,29 @@ require('header.php');
                         while ($row = mysqli_fetch_assoc($res)) {
                         ?>
                             <tr>
-                                <td><span class="bt-content"><?php echo $row['firstname']; ?></span></td>
-                                <td><span class="bt-content"><?php echo $row['lastname']; ?></span></td>
-                                <td><span class="bt-content"><?php echo $row['phone']; ?></span></td>
-                                <td><span class="bt-content"><?php echo $row['email']; ?></span></td>
-                                <td><span class="bt-content"><?php echo $row['housename']; ?></span></td>
-                                <td><span class="bt-content"><?php echo $row['place']; ?></span></td>
-                                <td><span class="bt-content"><?php echo $row['district']; ?></span></td>
-                                <td><span class="bt-content"><?php echo $row['pincode']; ?></span></td>
-                                <td><span class="bt-content" style="text-wrap: nowrap;"><?php echo date_format(date_create($row['date_of_birth']), "d-m-Y"); ?></span>
+                                <td><span class="bt-content"><?php echo safe_html($row['firstname']); ?></span></td>
+                                <td><span class="bt-content"><?php echo safe_html($row['lastname']); ?></span></td>
+                                <td><span class="bt-content"><?php echo safe_html($row['phone']); ?></span></td>
+                                <td><span class="bt-content"><?php echo safe_html($row['email']); ?></span></td>
+                                <td><span class="bt-content"><?php echo safe_html($row['housename']); ?></span></td>
+                                <td><span class="bt-content"><?php echo safe_html($row['place']); ?></span></td>
+                                <td><span class="bt-content"><?php echo safe_html($row['district']); ?></span></td>
+                                <td><span class="bt-content"><?php echo safe_html($row['pincode']); ?></span></td>
+                                <td><span class="bt-content" style="text-wrap: nowrap;"><?php echo !empty($row['date_of_birth']) ? date_format(date_create($row['date_of_birth']), "d-m-Y") : '-'; ?></span>
                                 </td>
-                                <td><span class="bt-content"><?php echo $row['ifsc_code']; ?></span></td>
-                                <td><span class="bt-content"><?php echo $row['acc_no']; ?></span></td>
+                                <td><span class="bt-content"><?php echo safe_html($row['ifsc_code']); ?></span></td>
+                                <td><span class="bt-content"><?php echo safe_html($row['acc_no']); ?></span></td>
                                 <td>
                                     <?php
                                     if ($row['status'] == 0) {
                                     ?>
                                         <div class="btn-group">
-                                            <button class="btn btn-sm btn-success" onclick="accept_or_reject('<?php echo $row['email']; ?>',1)">Accept</button>
-                                            <button class="btn btn-sm btn-danger" onclick="accept_or_reject('<?php echo $row['email']; ?>',0)">Reject</button>
+                                            <button class="btn btn-sm btn-success" onclick="accept_or_reject('<?php echo safe_html($row['email']); ?>',1)">Accept</button>
+                                            <button class="btn btn-sm btn-danger" onclick="accept_or_reject('<?php echo safe_html($row['email']); ?>',0)">Reject</button>
                                         </div>
                                     <?php
                                     } else {
-                                        echo "-";
+                                        echo '<span class="badge badge-success">Approved</span>';
                                     }
                                     ?>
                                 </td>

@@ -1,50 +1,92 @@
-<html>
+<?php
+session_start();
+require_once __DIR__ . '/../../../php/connect.php';
 
-<head>
+header('Content-Type: application/json; charset=utf-8');
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
+if (!isset($_SESSION['email']) || !isset($_SESSION['usertype']) || (int)$_SESSION['usertype'] !== 2) {
+    http_response_code(403);
+    echo json_encode(['status' => 'error', 'message' => 'Unauthorized']);
+    exit;
+}
 
-<body>
-    <?php
-    session_start();
-    require('../../../php/connect.php');
-    if (isset($_POST['success'])) {
-        $email = $_SESSION['email'];
-        $amt = $_POST['amt'];
-        $response = $_POST['response'];
-        $date = date('Y-m-d H:i:s');
-        $id = $_POST['book_id'];
+if (isset($_POST['success'])) {
+    $email = $_SESSION['email'];
+    $book_id = (int)($_POST['book_id'] ?? 0);
+    $response = trim($_POST['response'] ?? '');
 
-
-        $sql = "insert into payment (amount,paid_date,ref_id) values ('$amt','$date','$response')";
-        insert($sql);
-        echo $sql;
-
-        $pay_id = mysqli_insert_id($conn);
-
-
-        $sql2 = "update bookings set pay_id1='$pay_id' where book_id='$id'";
-        insert($sql2);
-
-        $_SESSION['menu'] = "book";
-        exit();
-    } else {
-    ?>
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Error!',
-            }).then((result) => {
-                window.location.replace('../book_approved.php');
-            })
-        </script>
-    <?php
-
+    if ($book_id <= 0) {
+        http_response_code(400);
+        echo json_encode(['status' => 'error', 'message' => 'Invalid booking ID']);
+        exit;
     }
 
-    ?>
-</body>
+    // Verify booking belongs to logged-in user and quotation has been approved
+    $bRes = sel("SELECT book_id, price, pay_id1, book_status FROM bookings WHERE book_id=? AND user_email=?", [$book_id, $email]);
+    if (!$bRes || mysqli_num_rows($bRes) === 0) {
+        http_response_code(404);
+        echo json_encode(['status' => 'error', 'message' => 'Booking not found or does not belong to your account']);
+        exit;
+    }
 
-</html>
+    $booking = mysqli_fetch_assoc($bRes);
+    if ((int)$booking['pay_id1'] !== 0) {
+        http_response_code(400);
+        echo json_encode(['status' => 'error', 'message' => 'Advance payment already processed for this booking']);
+        exit;
+    }
+
+    $price = (float)$booking['price'];
+    if ($price <= 0) {
+        http_response_code(400);
+        echo json_encode(['status' => 'error', 'message' => 'Invalid booking price']);
+        exit;
+    }
+
+    // Calculate advance amount (40%) server-side
+    $advanceAmount = round($price * 0.40);
+
+    // Verify Razorpay signature if live mode
+    if (!defined('MOCK_PAYMENTS') || !MOCK_PAYMENTS) {
+        $razorpayPaymentId = $_POST['razorpay_payment_id'] ?? $response;
+        $razorpayOrderId   = $_POST['razorpay_order_id'] ?? '';
+        $razorpaySignature = $_POST['razorpay_signature'] ?? '';
+
+        if (!empty($razorpayOrderId) && !empty($razorpaySignature)) {
+            $expectedSignature = hash_hmac('sha256', $razorpayOrderId . '|' . $razorpayPaymentId, RAZORPAY_KEY_SECRET);
+            if (!hash_equals($expectedSignature, $razorpaySignature)) {
+                http_response_code(400);
+                echo json_encode(['status' => 'error', 'message' => 'Invalid Razorpay signature']);
+                exit;
+            }
+        } elseif (empty($razorpayPaymentId)) {
+            http_response_code(400);
+            echo json_encode(['status' => 'error', 'message' => 'Missing payment identifier']);
+            exit;
+        }
+    } else {
+        if (empty($response)) {
+            $response = 'mock_adv_' . bin2hex(random_bytes(6));
+        }
+    }
+
+    $paidDate = date('Y-m-d H:i:s');
+    $ins = insert("INSERT INTO payment (amount, paid_date, ref_id) VALUES (?, ?, ?)",
+        [$advanceAmount, $paidDate, $response]);
+
+    if (!$ins) {
+        http_response_code(500);
+        echo json_encode(['status' => 'error', 'message' => 'Database error while saving payment']);
+        exit;
+    }
+
+    $pay_id = mysqli_insert_id($conn);
+    $up = update("UPDATE bookings SET pay_id1=? WHERE book_id=? AND user_email=?", [$pay_id, $book_id, $email]);
+
+    $_SESSION['menu'] = "book";
+    echo json_encode(['status' => 'success', 'pay_id' => $pay_id, 'amount' => $advanceAmount]);
+    exit;
+}
+
+http_response_code(400);
+echo json_encode(['status' => 'error', 'message' => 'Bad request']);

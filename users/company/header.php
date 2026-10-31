@@ -6,21 +6,28 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 -->
 <?php
 session_start();
-if (!isset($_SESSION['email'])) {
-    echo "<script>window.location.replace('../../index.php')</script>";
+require_once __DIR__ . '/../../php/connect.php';
+
+if (!isset($_SESSION['email']) || !isset($_SESSION['usertype']) || (int)$_SESSION['usertype'] !== 3) {
+    header("Location: ../../login.html");
+    exit;
 }
 $email = $_SESSION['email'];
-require('../../php/connect.php');
 
-$sql = "select status from login where email='$email'";
-$res = sel($sql);
-$row = mysqli_fetch_assoc($res);
-$status = $row['status'];
+$sql = "select status from login where email=?";
+$res = sel($sql, [$email]);
+$lRow = $res ? mysqli_fetch_assoc($res) : null;
+$status = $lRow ? (int)$lRow['status'] : 0;
 
+$currentPage = basename($_SERVER['PHP_SELF']);
+if ($status === 0 && !in_array($currentPage, ['profile.php', 'password.php'])) {
+    header("Location: profile.php");
+    exit;
+}
 
-$sql = "select * from company where email='$email'";
-$res = sel($sql);
-$row = mysqli_fetch_assoc($res);
+$sql = "select * from company where email=?";
+$res = sel($sql, [$email]);
+$row = $res ? mysqli_fetch_assoc($res) : [];
 ?>
 <!DOCTYPE html>
 
@@ -221,8 +228,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <li class="dropdown profile_details_drop">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                     <div class="profile_img">
-                                        <img class="prfil-img" style="width: 33px;height: 33px;border-radius: 50%;" src="<?php echo 'uploads/profile/' . $row['profile_pic']; ?>" alt="Profile Image">
-                                        <span style="color: white;"><?php echo $row['name']; ?></span>
+                                        <img class="prfil-img" style="width: 33px;height: 33px;border-radius: 50%;object-fit:cover;" src="<?php echo 'uploads/profile/' . rawurlencode(!empty($row['profile_pic']) ? $row['profile_pic'] : 'default.jpg'); ?>" alt="Profile Image">
+                                        <span style="color: white;"><?php echo safe_html($row['name'] ?? ''); ?></span>
                                         <div class="clearfix"></div>
                                     </div>
                                 </a>

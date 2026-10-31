@@ -63,8 +63,8 @@ require('header.php');
                             while ($row = mysqli_fetch_assoc($res)) {
                             ?>
                                 <tr>
-                                    <td><?php echo $row['cat_id']; ?></td>
-                                    <td><?php echo $row['cat_title']; ?></td>
+                                    <td><?php echo safe_html($row['cat_id']); ?></td>
+                                    <td><?php echo safe_html($row['cat_title']); ?></td>
                                 </tr>
 
                             <?php

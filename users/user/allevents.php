@@ -51,46 +51,45 @@ require('header.php');
 
 
                 <?php
-                $sql = "select events.*,category.*,company.*,company.name as company_name,events.name as event_name from events,category,company where events.category=category.cat_id and company.email=events.company_email";
+                $cartEvents = [];
+                $cartRes = sel("SELECT event_id FROM cart WHERE user=?", [$email]);
+                if ($cartRes) {
+                    while ($c = mysqli_fetch_assoc($cartRes)) {
+                        $cartEvents[(int)$c['event_id']] = true;
+                    }
+                }
+
+                $sql = "select events.*,category.*,company.*,company.name as company_name,events.name as event_name from events,category,company where events.category=category.cat_id and company.email=events.company_email order by events.event_id desc";
                 $res = sel($sql);
-                while ($row = mysqli_fetch_assoc($res)) {
+                if ($res) {
+                    while ($row = mysqli_fetch_assoc($res)) {
+                        $eventId = (int)$row['event_id'];
+                        $inCart = isset($cartEvents[$eventId]);
                 ?>
-                    <div class="col-md-4" style="margin: 0px;display: inline-block;padding: 15px;">
-                        <div class="card" style="height: 100%;">
+                    <div class="col-md-4 col-sm-6" style="margin: 0px;display: inline-block;padding: 15px;vertical-align: top;">
+                        <div class="card" style="height: 100%; display: flex; flex-direction: column;">
 
-                            <div class="card-header">
-                                <?php echo $row['cat_title']; ?>
+                            <div class="card-header font-weight-bold" style="background: #f8f9fa;">
+                                <?php echo safe_html($row['cat_title']); ?>
                             </div>
-                            <div class="card-body">
-                                <h5 class="card-title"><?php echo $row['event_name']; ?></h5>
-                                <h6 class="card-title"><?php echo $row['company_name']; ?></h6>
-                                <p class="card-text"><?php echo $row['description']; ?></p>
+                            <div class="card-body" style="flex: 1 1 auto;">
+                                <h5 class="card-title" style="color: #337ab7; font-weight: 600;"><?php echo safe_html($row['event_name']); ?></h5>
+                                <h6 class="card-subtitle mb-2 text-muted"><i class="fa fa-building"></i> <?php echo safe_html($row['company_name']); ?></h6>
+                                <p class="card-text" style="font-size: 13px; color: #555; text-align: justify;"><?php echo nl2br(safe_html($row['description'])); ?></p>
                             </div>
-                            <div class="card-footer">
+                            <div class="card-footer" style="background: #fafafa; border-top: 1px solid #eee;">
                                 <div style="display: flex;justify-content: space-evenly">
-                                    <?php
-                                    $sql2 = "select * from cart where user='$email' and event_id=" . $row['event_id'];
-                                    $num = num($sql2);
-                                    if ($num != 0) {
-                                    ?>
-                                        <div class="heart" style="border: none;background: transparent;" onclick="removecart(<?php echo $row['event_id']; ?>)"><button class="btn btn-danger btn-sm">Remove from Cart</button></div>
-                                    <?php
-                                    } else {
-                                    ?>
-                                        <div class="heart" style="border: none;background: transparent;" onclick="addcart(<?php echo $row['event_id']; ?>)"><button class="btn btn-primary btn-sm">Add to Cart</button></div>
-
-                                    <?php
-                                    }
-                                    ?>
-                                    <!-- <button class="btn btn-sm btn-primary"
-                                    onclick="window.location.href='view.php?id=<?php //echo $row['event_id']; 
-                                                                                ?>'"><i
-                                        class="fa fa-eye"></i> View</button> -->
+                                    <?php if ($inCart): ?>
+                                        <button type="button" class="btn btn-danger btn-sm" onclick="removecart(<?php echo $eventId; ?>)"><i class="fa fa-trash"></i> Remove from Cart</button>
+                                    <?php else: ?>
+                                        <button type="button" class="btn btn-primary btn-sm" onclick="addcart(<?php echo $eventId; ?>)"><i class="fa fa-cart-plus"></i> Add to Cart</button>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
                     </div>
                 <?php
+                    }
                 }
                 ?>
 
