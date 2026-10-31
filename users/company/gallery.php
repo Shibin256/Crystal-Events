@@ -52,7 +52,7 @@ button:active {
                                 onsubmit="return check()">
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Photo</label>
-                                    <input type="file" class="form-control" placeholder="Name" name="photo" required="">
+                                    <input type="file" class="form-control" id="photo" name="photo" accept="image/jpeg,image/png,image/webp" required="">
                                 </div>
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Caption</label>
@@ -71,20 +71,21 @@ button:active {
                 <div class="row">
 
                     <?php
-                    $sql = "select * from gallery where company_email='$email'";
-                    $res = sel($sql);
+                    $sql = "select * from gallery where company_email=?";
+                    $res = sel($sql, [$email]);
 
                     while ($row = mysqli_fetch_assoc($res)) {
+                        $photoUrl = 'uploads/gallery/' . rawurlencode($row['photo']);
                     ?>
                     <div class="col-lg-3 col-md-4 col-xs-6 thumb">
                         <div style="background-color: #fff;border: 1px solid #dee2e6;">
-                            <a class="thumbnail" href="#" data-image-id="" data-toggle="modal" data-title=""
-                                data-image="<?php echo 'uploads/gallery/' . $row['photo'] ?>"
+                            <a class="thumbnail" href="#" data-image-id="" data-toggle="modal" data-title="<?php echo safe_html($row['caption']); ?>"
+                                data-image="<?php echo safe_html($photoUrl); ?>"
                                 data-target="#image-gallery">
-                                <img class="img-thumbnail" src="<?php echo 'uploads/gallery/' . $row['photo'] ?>"
-                                    alt="Another alt text" style="border: none;height: 255px;width: 100%;">
+                                <img class="img-thumbnail" src="<?php echo safe_html($photoUrl); ?>"
+                                    alt="<?php echo safe_html($row['caption']); ?>" style="border: none;height: 255px;width: 100%;object-fit:cover;">
                             </a>
-                            <p><?php echo  $row['caption'] ?></p>
+                            <p style="padding: 8px; margin: 0; font-weight: 500;"><?php echo safe_html($row['caption']); ?></p>
                         </div>
                     </div>
                     <?php

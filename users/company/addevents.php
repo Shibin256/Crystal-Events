@@ -31,8 +31,7 @@ require('header.php');
                             <h4>Add New Events</h4>
                         </div>
                         <div class="form-body">
-                            <form action="php/addevents.php" method="post" enctype="multipart/form-data"
-                                onsubmit="return check()">
+                            <form action="php/addevents.php" method="post">
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Name</label>
                                     <input type="text" class="form-control" placeholder="Name" name="name" required="">
@@ -75,23 +74,3 @@ require('header.php');
 <?php
 require('footer.php');
 ?>
-
-<script type="text/javascript">
-function check() {
-    var photo = document.getElementById('photo');
-    var fileExtension = photo.value.split('.').pop().toLowerCase();
-    if (fileExtension === 'jpg' || fileExtension === 'jpeg' || fileExtension === 'png') {
-        return true;
-    } else {
-        Swal.fire({
-            icon: 'error',
-            title: 'Invalid File Format!',
-            text: 'Please select jpg, jpeg or png file',
-        }).then((result) => {
-            photo.focus();
-        })
-        return false;
-    }
-
-}
-</script>
