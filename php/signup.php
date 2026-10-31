@@ -24,16 +24,17 @@ if (isset($_POST['user'])) {
             $text = "An account with this email is already registered.";
         } else {
             $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-            $uRes = insert("INSERT INTO users (firstname, lastname, email, profile_pic) VALUES (?, ?, ?, 'default.jpg')",
-                [$firstname, $lastname, $email]);
             $lRes = insert("INSERT INTO login (email, password, usertype, status) VALUES (?, ?, 2, 0)",
                 [$email, $hashedPassword]);
+            $uRes = insert("INSERT INTO users (firstname, lastname, email, profile_pic) VALUES (?, ?, ?, 'default.jpg')",
+                [$firstname, $lastname, $email]);
 
-            if ($uRes && $lRes) {
+            if ($lRes && $uRes) {
                 $status = "success";
                 $title = "Registration Success!";
                 $text = "Your user account has been registered and is pending admin verification.";
             } else {
+                delete("DELETE FROM login WHERE email=?", [$email]);
                 $text = "Database error during registration.";
             }
         }
@@ -54,16 +55,17 @@ if (isset($_POST['user'])) {
             $text = "An account with this email is already registered.";
         } else {
             $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-            $cRes = insert("INSERT INTO company (name, email, profile_pic) VALUES (?, ?, 'default.jpg')",
-                [$name, $email]);
             $lRes = insert("INSERT INTO login (email, password, usertype, status) VALUES (?, ?, 3, 0)",
                 [$email, $hashedPassword]);
+            $cRes = insert("INSERT INTO company (name, email, profile_pic) VALUES (?, ?, 'default.jpg')",
+                [$name, $email]);
 
-            if ($cRes && $lRes) {
+            if ($lRes && $cRes) {
                 $status = "success";
                 $title = "Registration Success!";
                 $text = "Your company account has been registered and is pending admin verification.";
             } else {
+                delete("DELETE FROM login WHERE email=?", [$email]);
                 $text = "Database error during registration.";
             }
         }
